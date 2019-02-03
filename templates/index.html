@@ -1,10 +1,22 @@
-{% extends "bootstrap/base.html" %}
-{% block title %}This is an example page{% endblock %}
+{% extends 'layout.html' %}
+{% block title %} eComm{% endblock %}
 
 {% block navbar %}
 {{nav.top.render()}}
 {% endblock %}
 
 {% block content %}
-  <h1>Hello, Bootstrap</h1>
+  <div class="jumbotron text-center">
+    <h1>This is the Flask App</h1>
+    <p>This is a soon to be eCommerce site</p>
+  </div>
+
+  <h1> Products </h1>
+  <ul>
+    {% for product in products %}
+    <li>{{product.title}}</li>
+    {% endfor %}
+  </ul>
+
+
 {% endblock %}
