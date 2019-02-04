@@ -92,16 +92,21 @@ def create_app():
           # Create Cursor
           cur = mysql.connection.cursor()
 
-          cur.execute("INSERT INTO users(name, email, username, password) VALUES(%s, %s, %s, %s)", (name, email, username, password))
+          # Search for exsisting users
+          result = cur.execute("SELECT * FROM users WHERE username = %s", [username])
 
-          # Commit to DB
-          # mysql.connection.commit()
+          # If no user exsists add user to DB
+          if result == 0:
+              cur.execute("INSERT INTO users(name, email, username, password) VALUES(%s, %s, %s, %s)", (name, email, username, password))
+              mysql.connection.commit()
+
+              # Success Message
+              flash('You are now regiestered and can login!', 'success')
+          else:
+              flash('User Already Exsists!', 'danger')
 
           # Close Connection
           cur.close()
-
-          # Success Message
-          flash('You are now regiestered and can login', 'scucess')
 
           redirect(url_for('index'))
 
@@ -128,8 +133,14 @@ def create_app():
 
               # Compare Password
               if sha256_crypt.verify(password_candidate, password):
+                  flash('Successful Login!', 'success')
                   app.logger.info('PASSS MATCH')
+              else:
+                  flash('Login Not Successful!', 'danger')
+                  app.logger.info('BAD PASSWORD')
+
           else:
+              flash('No Users Found...', 'danger')
               app.logger.info('NO USERS')
 
       return render_template('login.html', form=form)
