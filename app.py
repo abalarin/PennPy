@@ -1,11 +1,13 @@
 from flask import Flask, render_template, flash, request, redirect, url_for, session, logging
 
+# NAv Bar Requirments
 from flask_nav import Nav
-from flask_nav.elements import Navbar, View
+from flask_nav.elements import *
 
+# SQL
 from flask_mysqldb import MySQL
 
-# - FORMS
+# FORMS Requirments
 from flask_bootstrap import Bootstrap
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from passlib.hash import sha256_crypt
@@ -14,30 +16,15 @@ from passlib.hash import sha256_crypt
 from data import Products
 Products = Products()
 
-
 # Creating a navbar object
-topbar = Navbar('MyBar',
+topbar = Navbar('eStitch',
     View('Home', 'index'),
     View('Profile', 'profile'),
+
     View('Login', 'login'),
-    View('Register', 'register')
+    View('Register', 'register'),
+    View('Logout', 'logout')
 )
-
-class RegisterForm(Form):
-    name = StringField('Name', [validators.Length(min=1, max=50)])
-    username = StringField('Username', [validators.Length(min=4, max=25)])
-    email = StringField('Email', [validators.Length(min=4, max=50)])
-    password = PasswordField('Password', [
-        validators.DataRequired(),
-        validators.EqualTo('confirm', message='Pass dont match')
-    ])
-    confirm = PasswordField('Confirm Password')
-
-class LoginForm(Form):
-    username = StringField('Username', [validators.Length(min=1, max=25)])
-    password = PasswordField('Password', [validators.DataRequired(), validators.Length(min=1, max=50)])
-
-
 
 def create_app():
 
@@ -65,12 +52,9 @@ def create_app():
   app.secret_key='secret123'
 
 
-  # Routes
+  # ----- Routes -----
   @app.route('/')
   def index():
-      # cur = mysql.connection.cursor()
-      # cur.execute('''SELECT user, host FROM mysql.user''')
-      # rv = cur.fetchall()
 
       return render_template("index.html", products = Products)
 
@@ -110,12 +94,17 @@ def create_app():
 
           redirect(url_for('index'))
 
+      # Return an html template filled with form data
       return render_template('register.html', form=form)
 
   @app.route('/login', methods=['GET', 'POST'])
   def login():
+
+      # Create Login object from form data
       form = LoginForm(request.form)
+
       if request.method == 'POST':
+
           # Get Form DataRequired
           username = request.form['username']
           password_candidate = request.form['password']
@@ -126,23 +115,57 @@ def create_app():
           # Query the user from SQL DB
           result = cur.execute("SELECT * FROM users WHERE username = %s", [username])
 
+          # Check if user exsists
           if result > 0:
+
               #Get stored hash
               data = cur.fetchone()
               password = data['password']
 
-              # Compare Password
+              # Compare Password with crypt/hash module
               if sha256_crypt.verify(password_candidate, password):
+
+                  # Init session vars
+                  session['logged_in'] = True
+                  session['username'] = username
+
                   flash('Successful Login!', 'success')
-                  app.logger.info('PASSS MATCH')
+                  return redirect(url_for('profile'))
+                  # app.logger.info('PASSS MATCH')
               else:
                   flash('Login Not Successful!', 'danger')
                   app.logger.info('BAD PASSWORD')
 
-          else:
-              flash('No Users Found...', 'danger')
-              app.logger.info('NO USERS')
+              # Close SQL connection
+              cur.close()
 
+          else:
+              return render_template('login.html', form=form, error="No users found")
+
+      # Return an html template filled with form data
       return render_template('login.html', form=form)
 
+  @app.route('/logout')
+  def logout():
+      session.clear()
+      flash('Youve logged out!', 'success')
+      return redirect(url_for('login'))
+
+  #EOL
   return app
+
+# -- Account Creation and Validation Object Declerations --
+class RegisterForm(Form):
+    name = StringField('Name', [validators.Length(min=1, max=50)])
+    username = StringField('Username', [validators.Length(min=4, max=25)])
+    email = StringField('Email', [validators.Length(min=4, max=50)])
+    password = PasswordField('Password', [
+        validators.DataRequired(),
+        validators.EqualTo('confirm', message='Pass dont match')
+    ])
+    confirm = PasswordField('Confirm Password')
+
+class LoginForm(Form):
+    username = StringField('Username', [validators.Length(min=1, max=25)])
+    password = PasswordField('Password', [validators.DataRequired(), validators.Length(min=1, max=50)])
+# -----------------------------------------------------------
