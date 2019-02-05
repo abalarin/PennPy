@@ -1,10 +1,6 @@
 {% extends "layout.html" %}
 {% block title %}Loggy{% endblock %}
 
-{% block navbar %}
-{{nav.top.render()}}
-{% endblock %}
-
 {% block content %}
   <h1>Login</h1>
   {% from "includes/_formhelpers.html" import render_field %}

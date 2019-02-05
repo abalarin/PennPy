@@ -1,9 +1,5 @@
-{% extends "bootstrap/base.html" %}
+{% extends "layout.html" %}
 {% block title %}eCommerce{% endblock %}
-
-{% block navbar %}
-{{nav.top.render()}}
-{% endblock %}
 
 {% block content %}
   <h1>Hello, {{session.username}}</h1>
