@@ -6,11 +6,13 @@ from flask_mysqldb import MySQL
 # FORMS Requirments
 from flask_bootstrap import Bootstrap
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
+# Password hasher
 from passlib.hash import sha256_crypt
 
-#Object from hardscripted db
+#-- Object from hardscripted db <-- removing this and data.py
 from data import Products
 Products = Products()
+#-- end hardcode db
 
 def create_app():
 
@@ -18,7 +20,7 @@ def create_app():
   app = Flask(__name__)
   Bootstrap(app)
 
-  # #MYSQL init
+  # MYSQL init
   app.config['MYSQL_HOST']='localhost'
   app.config['MYSQL_USER']='root'
   app.config['MYSQL_PASSWORD']='linode!'
@@ -27,6 +29,7 @@ def create_app():
 
   mysql = MySQL(app)
 
+  # App seceret key for session
   app.secret_key='secret123'
 
 
@@ -35,9 +38,9 @@ def create_app():
   def index():
       return render_template("index.html", products = Products)
 
-  @app.route('/profile')
-  def profile():
-      return render_template("profile.html")
+  @app.route('/dashboard')
+  def dashboard():
+      return render_template("dashboard.html")
 
   @app.route('/register', methods=['GET', 'POST'])
   def register():
@@ -107,7 +110,7 @@ def create_app():
                   session['username'] = username
 
                   flash('Successful Login!', 'success')
-                  return redirect(url_for('profile'))
+                  return redirect(url_for('dashboard'))
                   # app.logger.info('PASSS MATCH')
               else:
                   flash('Login Not Successful!', 'danger')
@@ -128,10 +131,21 @@ def create_app():
       flash('Youve logged out!', 'success')
       return redirect(url_for('login'))
 
+  # @app.route('/upload', method=['POST'])
+  # def upload():
+  #     folder_name = request.form['']
+  #     '''
+  #     sadasdasddssad
+  #     sadasdasddssaddsaa
+  #     sadasdasddssad
+  #
+  #     '''
+
+
   #EOL
   return app
 
-# -- Account Creation and Validation Object Declerations --
+# -- Account Creation and Validation Declerations --
 class RegisterForm(Form):
     name = StringField('Name', [validators.Length(min=1, max=50)])
     username = StringField('Username', [validators.Length(min=4, max=25)])
