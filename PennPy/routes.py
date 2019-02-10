@@ -39,9 +39,21 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 def index():
   return render_template("index.html", products = get_products())
 
+
 @app.route('/dashboard')
 def dashboard():
-    return render_template("dashboard.html", products = get_products())
+    if 'username' in session:
+        user = get_user(session['username'])
+        if user['admin_level'] > 0:
+            return render_template("dashboard.html", products = get_products())
+        else:
+            return index()
+    else:
+        return index()
+
+@app.route('/slider')
+def silder():
+    return render_template("slider_test.html", products = get_products())
 
 @app.route('/upload', methods=['POST'])
 def upload():
@@ -76,43 +88,30 @@ def upload():
     flash('Image Uploaded!', 'success')
     return redirect(url_for('dashboard'))
 
-@app.route('/image/<filename>')
-def get_image(filename):
-    return send_from_directory('static/images', filename)
+@app.route('/images/<id>/<filename>')
+def get_image(id, filename):
+    return send_from_directory('static/images', id +'/' + filename)
 
 @app.route('/image/<id>')
 def get_images(id):
     target = os.path.join(APP_ROOT, 'static/images/' + id)
     if os.path.isdir(target):
-        images = os.listdir(target)
-        return images
+        return os.listdir(target)
     return False
 
 @app.route('/product/products', methods=['GET'])
 def get_products():
     cur = mysql.connection.cursor()
+
     cur.execute("SELECT * FROM product")
     products = cur.fetchall()
     cur.close()
 
+    # Get images for each product
     for product in products:
-        print(product["id"])
-        # images = get_images(product["id"])
-        # print(images)
-        # if image != False:
-        #     product['images'] = images
+        images = get_images(product["id"])
+        product['images'] = images
 
-    # for product in products:
-    #     # files = os.listdir("./static/images/" + product["name"])
-    #     target = os.path.join(APP_ROOT, 'static/images/' + str(product["id"]))
-    #     if os.path.isdir(target):
-    #         img_names = os.listdir(target)
-    #         print("imgs ----- ")
-    #         print(img_names)
-    #         # for item in
-        # print(os.listdir("./static/images/" + product["name"]))
-
-    # print(products)
     return (products)
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -134,7 +133,7 @@ def register():
 
       # If no user exsists add user to DB
       if result == 0:
-          cur.execute("INSERT INTO users(name, email, username, password) VALUES(%s, %s, %s, %s)", (name, email, username, password))
+          cur.execute("INSERT INTO users(name, email, username, password, admin_level) VALUES(%s, %s, %s, %s, %s)", (name, email, username, password, 0))
           mysql.connection.commit()
 
           # Success Message
@@ -173,6 +172,7 @@ def login():
             # Init session vars
             session['logged_in'] = True
             session['username'] = username
+            session['admin_level'] = data['admin_level']
 
             flash('Successful Login!', 'success')
             return redirect(url_for('dashboard'))
@@ -198,10 +198,21 @@ def logout():
   flash('Youve logged out!', 'success')
   return redirect(url_for('index'))
 
+def get_user(username):
+    cur = mysql.connection.cursor()
+    result = cur.execute("SELECT * FROM users WHERE username = %s", [username])
+    if result > 0:
+        user = cur.fetchone()
+        print(user)
+        return user
+
+
 @app.errorhandler(404)
+@app.errorhandler(405)
 def page_not_found(e):
+    print(e)
     # note that we set the 404 status explicitly
-    return render_template('404.html'), 404
+    return render_template('404.html', e=e)
 
 def id_validator(uid):
     cur = mysql.connection.cursor()
