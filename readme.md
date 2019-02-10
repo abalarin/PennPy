@@ -74,7 +74,7 @@ $ source venv/bin/activate
 ### Install dependecies & launch app
 ```
 # Install app dependencies
-$ pip install -r requirments.txt
+$ pip install -e .
 
 # Launch app
 $ flask run
