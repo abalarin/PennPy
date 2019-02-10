@@ -1,5 +1,6 @@
 # A Circular import, importing __init__.py
 from PennPy import app
+import uuid
 
 import os
 from flask import Flask, render_template, flash, request, redirect, url_for, session, logging, send_from_directory
@@ -14,11 +15,6 @@ from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 # Password hasher
 from passlib.hash import sha256_crypt
 
-#-- Object from hardscripted db <-- removing this and data.py
-from PennPy.data import Products
-Products = Products()
-#-- end hardcode db
-
 # Bootstrap(app)
 
 # MYSQL init
@@ -30,6 +26,8 @@ app.config['MYSQL_CURSORCLASS']='DictCursor'
 
 mysql = MySQL(app)
 
+app.config['static_folder']='images'
+
 # App seceret key for session
 app.secret_key='secret123'
 
@@ -39,48 +37,77 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 # ----- Routes -----
 @app.route('/')
 def index():
-  return render_template("index.html", products = Products)
+  return render_template("index.html", products = get_products())
 
 @app.route('/dashboard')
 def dashboard():
-  return render_template("dashboard.html")
+    return render_template("dashboard.html", products = get_products())
 
 @app.route('/upload', methods=['POST'])
 def upload():
+    # Create SQL Product Object
+    product_id = str(id_validator(uuid.uuid4()))
+    product_name = request.form.get('product_name')
+    product_category = request.form.get('product_category')
+    product_price = request.form.get('product_cost')
+    product_description = request.form.get('product_description')
+    image_root = "images/" + product_id + "/"
 
-  # Create a target path for new product image(s)
-  target = os.path.join(APP_ROOT, 'static/images')
-  print("IMG: " + target)
+    # Create a target path for new product image(s)
+    target = os.path.join(APP_ROOT, 'static/images/' + product_id)
 
-  # Create SQL Product Object
-  product_name = request.form.get('product_name')
-  product_category = request.form.get('product_category')
-  product_cost = request.form.get('product_cost')
-  product_description = request.form.get('product_description')
-  product_images = []
+    # If not directory exsists create new one
+    if not os.path.isdir(target):
+        os.mkdir(target)
 
-  # If not directory exsists create new one
-  if not os.path.isdir(target):
-      os.mkdir(target)
+    # Loop through files to upload
+    for file in request.files.getlist("product_images"):
+        print("{} is the file name".format(file.filename))
+        filename = file.filename
+        destination = "/".join([target, filename])
+        file.save(destination)
 
-  # Loop through files to upload
-  for file in request.files.getlist("product_images"):
-      print(file)
-      print("{} is the file name".format(file.filename))
-      filename = file.filename
-      destination = "/".join([target, filename])
-      print(destination)
-      file.save(destination)
-      product_images.append(destination)
+    cur = mysql.connection.cursor()
 
+    cur.execute("INSERT INTO product(name, category, price, description, image_root, id) VALUES(%s, %s, %s, %s, %s, %s)", (product_name, product_category, product_price, product_description, image_root, product_id))
+    mysql.connection.commit()
+    cur.close()
 
+    flash('Image Uploaded!', 'success')
+    return url_for('dashboard')
 
-  flash('Image Uploaded!', 'success')
-  return render_template("dashboard.html")
-
-@app.route('/upload/<filename>')
+@app.route('/image/<filename>')
 def get_image(filename):
-  return send_from_directory("/static/images", filename)
+    return send_from_directory('static/images', filename)
+
+@app.route('/image/<id>')
+def get_images(id):
+    target = os.path.join(APP_ROOT, 'static/images/' + id)
+    if os.path.isdir(target):
+        images = os.listdir(target)
+        return images
+
+    return render_template('index.html', error="No images")
+
+@app.route('/product/products', methods=['GET'])
+def get_products():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM product")
+    products = cur.fetchall()
+    cur.close()
+
+    # for product in products:
+    #     # files = os.listdir("./static/images/" + product["name"])
+    #     target = os.path.join(APP_ROOT, 'static/images/' + str(product["id"]))
+    #     if os.path.isdir(target):
+    #         img_names = os.listdir(target)
+    #         print("imgs ----- ")
+    #         print(img_names)
+    #         # for item in
+        # print(os.listdir("./static/images/" + product["name"]))
+
+    # print(products)
+    return (products)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -119,15 +146,11 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-
-  # Create Login object from form data
-  form = LoginForm(request.form)
-
   if request.method == 'POST':
 
       # Get Form DataRequired
-      username = request.form['username']
-      password_candidate = request.form['password']
+      username = request.form.get('username')
+      password_candidate = request.form.get('password')
 
       # Create Cursor
       cur = mysql.connection.cursor()
@@ -160,17 +183,32 @@ def login():
           cur.close()
 
       else:
-          return render_template('login.html', form=form, error="No users found")
+          flash('No user found!', 'danger')
+          return redirect(url_for('index', error="No users found"))
 
-  # Return an html template filled with form data
-  return render_template('login.html', form=form)
+      # Return an html template filled with form data
+      return redirect(url_for('index', success="Logged In!"))
 
 @app.route('/logout')
 def logout():
   session.clear()
   flash('Youve logged out!', 'success')
-  return redirect(url_for('login'))
+  return redirect(url_for('index'))
 
+@app.errorhandler(404)
+def page_not_found(e):
+    # note that we set the 404 status explicitly
+    return render_template('404.html'), 404
+
+def id_validator(uid):
+    cur = mysql.connection.cursor()
+    result = cur.execute("SELECT * FROM product WHERE id = %s", [uid])
+    cur.close()
+
+    if result > 0:
+        id_validator(uuid.uuid4())
+
+    return uid
 
 # -- Account Creation and Validation Declerations --
 class RegisterForm(Form):
@@ -183,7 +221,4 @@ class RegisterForm(Form):
     ])
     confirm = PasswordField('Confirm Password')
 
-class LoginForm(Form):
-    username = StringField('Username', [validators.Length(min=1, max=25)])
-    password = PasswordField('Password', [validators.DataRequired(), validators.Length(min=1, max=50)])
 # -----------------------------------------------------------

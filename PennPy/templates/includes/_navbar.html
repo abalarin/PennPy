@@ -10,16 +10,35 @@
         <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
       </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0">
+    <div class="form-inline my-2 my-lg-0">
       <ul class="navbar-nav mr-auto">
         {% if session.logged_in %}
           <li><a class="nav-link" href="/dashboard">Dashboard</a></li>
           <li><a class="nav-link" href="/logout">Logout</a></li>
         {% else %}
           <li><a class="nav-link" href="/register">Register</a></li>
-          <li><a class="nav-link" href="/login">Login</a></li>
+          <li>
+            <a class="nav-link" href="" data-toggle="modal" data-target="#loginModal" >Login</a>
+          </li>
         {% endif %}
       </ul>
-    </form>
+    </div>
   </div>
 </nav>
+
+<!-- Modal -->
+<div class="modal fade" id="loginModal"">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {% include 'includes/_login.html' %}
+      </div>
+    </div>
+  </div>
+</div>

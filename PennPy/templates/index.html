@@ -8,11 +8,9 @@
   </div>
 
   <h2> Products </h2>
-  <ul>
-    {% for product in products %}
-    <li>{{product.title}}</li>
-    {% endfor %}
-  </ul>
+  
+  <!-- Import create a product component -->
+  {% include 'includes/_product_card.html' %}
 
 
 

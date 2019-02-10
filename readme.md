@@ -33,6 +33,13 @@ mysql  Ver 8.0.13 for osx10.14 on x86_64 (Homebrew)
 $ export PATH=${PATH}:/path/to/mysql/bin
 ```
 
+### Create Tables
+```
+$ mysql -u root -p
+# pass prompt
+
+mysql> CREATE TABLE users(id INT(11) AUTO_INCREMENT PRIMARY KEY, name varchar(100), email varchar(100), username varchar(30), password varchar(100)); 
+```
 ## [Pip](https://pip.pypa.io/en/stable/installing/) Setup
 **pip** is a package management system used to install and manage software packages written in Python. You should already have **Python** installed, which should come with pip, if not:
 
