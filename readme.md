@@ -1,45 +1,78 @@
 # This is my Python Web App
 The goal is to make a eCommerce site out of Python and Flask
 
+## Getting Started
+### Required Things
+
+* [Python](https://www.python.org/downloads/)
+* [MySQL](https://dev.mysql.com/downloads/mysql/)
+* [PIP](https://pip.pypa.io/en/stable/installing/)
+
 ## Directory Structure Breakdown
 ```
 PennPy/		
-	public/		All public content/images will be placed here
-	static/		Location of all JS & CSS
-	templates/	HTML of all full pages
-		includes/	HTML of components, and items that exsist across all pages
-	venv/			virtual environment
-	app.py			Entry point to the app
-	requirments.txt	Required packages init file
+	static/		Public resources
+	templates/	HTML renderers
+		includes/	HTML components
+	__init__.py			Entry point to the app
+	routes.py		API endpoints
+venv/			virtual environment
+setup.py 		Dependencies init, configure entry point
 ```
 
-## Getting Started
-You'll first want to make sure you have [Virtualenv](https://virtualenv.pypa.io/en/latest/) installed. Virtualenv is a tool that lets you create an isolated Python environment for your project. It creates an environment that has its own installation directories, that doesn’t share dependencies with other virtualenv environments.
+## [MySQL](https://dev.mysql.com/downloads/mysql/) Setup
+On installation when you init a databade you should be asked to enter a password, make sure you remember it...
 
-#### For mac:
+```
+# Verify SQLs installed properlly
+$ mysql --version
+mysql  Ver 8.0.13 for osx10.14 on x86_64 (Homebrew)
+
+# If that breaks, you might need to add mysql to your paths... 
+# mine lives here: /usr/local/mysql/bin/
+$ export PATH=${PATH}:/path/to/mysql/bin
+```
+
+## [Pip](https://pip.pypa.io/en/stable/installing/) Setup
+**pip** is a package management system used to install and manage software packages written in Python. You should already have **Python** installed, which should come with pip, if not:
+
+```
+# To install pip, securely download get-pip.py
+$ curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+$ python get-pip.py
+
+$ pip --version
+pip 19.0.1 from /Library/Python/2.7/site-packages/pip (python 2.7)
+```
+
+## Virtualenv Setup
+**Virtualenv** is a tool that lets you create an isolated **Python** environment for your project. It creates an environment that has its own installation directories, that doesn’t share dependencies with other **virtualenv** environments.
+
 ```
 $ pip install virtualenv
 ```
 
-#### You will also need [Python](https://www.python.org/downloads/) and [Flask](http://flask.pocoo.org/docs/1.0/installation/#install-flask)
+## [Flask](http://flask.pocoo.org/docs/1.0/installation/#install-flask) Setup
 ```
-# Check your Python version
-$ python --version
-Python 3.7.2
-
-# Install Flask
 $ pip install Flask
 ```
 
-#### Clone, venv, install dependencies
+## Project Setup
+
+#### Clone this repo
 
 ```
 $ git clone https://github.com/abalarin/PennPy.git
 $ cd PennPy/
+```
+#### Launch the virtual env container
 
-# Launch you virtual env container
+```
 $ source venv/bin/activate
+```
 
+### Install dependecies & launch app
+```
 # Install app dependencies
 $ pip install -r requirments.txt
 
@@ -53,7 +86,7 @@ $ flask run
  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
 ```
 
-### Optional
+### Optional dev mode
 
 You probably want to run this app in dev mode, so that everytime you save a file it propogates on the server & you get stack trace for error displayed on browser
 
@@ -69,7 +102,3 @@ $ flask run
  * Debugger PIN: 222-305-860
 
 ```
-
-## Setting up SQL
-
-To do...

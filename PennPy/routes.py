@@ -73,7 +73,7 @@ def upload():
       file.save(destination)
       product_images.append(destination)
 
-  print(product_images)
+
 
   flash('Image Uploaded!', 'success')
   return render_template("dashboard.html")
