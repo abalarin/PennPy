@@ -74,7 +74,7 @@ def upload():
     cur.close()
 
     flash('Image Uploaded!', 'success')
-    return url_for('dashboard')
+    return redirect(url_for('dashboard'))
 
 @app.route('/image/<filename>')
 def get_image(filename):
@@ -86,8 +86,7 @@ def get_images(id):
     if os.path.isdir(target):
         images = os.listdir(target)
         return images
-
-    return render_template('index.html', error="No images")
+    return False
 
 @app.route('/product/products', methods=['GET'])
 def get_products():
@@ -95,6 +94,13 @@ def get_products():
     cur.execute("SELECT * FROM product")
     products = cur.fetchall()
     cur.close()
+
+    for product in products:
+        print(product["id"])
+        # images = get_images(product["id"])
+        # print(images)
+        # if image != False:
+        #     product['images'] = images
 
     # for product in products:
     #     # files = os.listdir("./static/images/" + product["name"])
@@ -141,53 +147,50 @@ def register():
 
       redirect(url_for('index'))
 
-  # Return an html template filled with form data
-  return render_template('register.html', form=form)
+  elif request.method == 'GET':
+      return render_template('register.html', form=form)
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login():
-  if request.method == 'POST':
+    # Get Form DataRequired
+    username = request.form.get('username')
+    password_candidate = request.form.get('password')
 
-      # Get Form DataRequired
-      username = request.form.get('username')
-      password_candidate = request.form.get('password')
+    # Create Cursor
+    cur = mysql.connection.cursor()
 
-      # Create Cursor
-      cur = mysql.connection.cursor()
+    # Query the user from SQL DB
+    result = cur.execute("SELECT * FROM users WHERE username = %s", [username])
 
-      # Query the user from SQL DB
-      result = cur.execute("SELECT * FROM users WHERE username = %s", [username])
+    # Check if user exsists
+    if result > 0:
+        #Get stored hash
+        data = cur.fetchone()
+        password = data['password']
 
-      # Check if user exsists
-      if result > 0:
+        # Compare Password with crypt/hash module
+        if sha256_crypt.verify(password_candidate, password):
+            # Init session vars
+            session['logged_in'] = True
+            session['username'] = username
 
-          #Get stored hash
-          data = cur.fetchone()
-          password = data['password']
+            flash('Successful Login!', 'success')
+            return redirect(url_for('dashboard'))
+            # app.logger.info('PASSS MATCH')
 
-          # Compare Password with crypt/hash module
-          if sha256_crypt.verify(password_candidate, password):
+        else:
+            flash('Login Not Successful!', 'danger')
+            app.logger.info('BAD PASSWORD')
 
-              # Init session vars
-              session['logged_in'] = True
-              session['username'] = username
+        # Close SQL connection
+        cur.close()
 
-              flash('Successful Login!', 'success')
-              return redirect(url_for('dashboard'))
-              # app.logger.info('PASSS MATCH')
-          else:
-              flash('Login Not Successful!', 'danger')
-              app.logger.info('BAD PASSWORD')
+    else:
+        flash('No user found!', 'danger')
+        return redirect(url_for('index', error="No users found"))
 
-          # Close SQL connection
-          cur.close()
-
-      else:
-          flash('No user found!', 'danger')
-          return redirect(url_for('index', error="No users found"))
-
-      # Return an html template filled with form data
-      return redirect(url_for('index', success="Logged In!"))
+    # Return an html template filled with form data
+    return redirect(url_for('index', success="Logged In!"))
 
 @app.route('/logout')
 def logout():
