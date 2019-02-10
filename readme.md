@@ -31,7 +31,7 @@ Python 3.7.2
 $ pip install Flask
 ```
 
-##### Then you'll want to clone the repo, start your virtual env, and install dependencies
+#### Clone, venv, install dependencies
 
 ```
 $ git clone https://github.com/abalarin/PennPy.git
@@ -69,3 +69,7 @@ $ flask run
  * Debugger PIN: 222-305-860
 
 ```
+
+## Setting up SQL
+
+To do...
