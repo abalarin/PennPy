@@ -9,8 +9,8 @@ setup(
         'flask_bootstrap',
         'flask_nav',
         'flask-mysqldb',
+        'flask_sqlalchemy',
         'flask-WTF',
         'passlib',
-
     ],
 )

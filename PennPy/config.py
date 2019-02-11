@@ -2,6 +2,7 @@ import os
 
 class Config:
     # MYSQL init
+    SQLALCHEMY_DATABASE_URI='mysql+mysqldb://root:linode!@localhost:3306/PennPy'
     MYSQL_HOST='localhost'
     MYSQL_USER='root'
     MYSQL_PASSWORD='linode!'
