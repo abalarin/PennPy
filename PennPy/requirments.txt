@@ -1,6 +1,0 @@
-flask
-flask_bootstrap
-flask_nav
-flask-mysqldb
-flask-WTF
-passlib

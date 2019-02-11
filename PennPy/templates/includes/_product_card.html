@@ -13,10 +13,9 @@
   <div class="col-sm-4" id="product_card">
     <div class="card" style="width: 18rem;">
 
-    {% if product.images != [] %}
-        <img class="product_img" src="{{url_for('get_image', id=product.id, filename=product.images[0])}}" alt="{{image1}}" >
-    {% endif %}
-
+      {% if product.images != [] %}
+          <img class="product_img" src="{{url_for('products.get_image', id=product.id, filename=product.images[0])}}" alt="{{image1}}" >
+      {% endif %}
 
       <div class="card-body">
         <h5 class="card-title">{{product.name}} - <em>{{product.category}}</em></h5>
