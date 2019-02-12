@@ -4,7 +4,6 @@ import uuid, os
 
 # Homebuilt imports
 from PennPy import mysql
-from PennPy.models import Product
 from PennPy.config import Config
 
 

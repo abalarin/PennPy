@@ -6,39 +6,68 @@ import uuid, os
 from PennPy import mysql
 from PennPy.users.forms import (RegisterForm)
 from PennPy.products.routes import get_products
+from PennPy.models import Users
+from PennPy.forms import RegistrationForm
 
 users = Blueprint('users', __name__)
 
-@users.route('/register', methods=['GET', 'POST'])
+@users.route("/register", methods=['GET', 'POST'])
 def register():
-  form = RegisterForm(request.form)
-  if request.method == 'POST' and form.validate():
+    form = RegistrationForm()
+    if request.method == 'GET':
+        return render_template('sql.html', form=form)
 
-      # Create SQL form data
-      name = form.name.data
-      email = form.email.data
-      username = form.username.data
-      password = sha256_crypt.encrypt(str(form.password.data))
+    # Uses WTF to check if POST req and form is valid
+    if form.validate_on_submit():
+        if user_exsists(form.username.data, form.email.data):
+            flash(f'{form.username.data} already exsists!', 'danger')
+            return render_template('sql.html', form=form)
+        else:
+            flash(f'Account created for {form.username.data}!', 'success')
+            return redirect(url_for('main.index'))
 
-      # Create Cursor
-      cur = mysql.connection.cursor()
+    return render_template('sql.html', form=form)
 
-      # Search for exsisting users
-      result = cur.execute("SELECT * FROM users WHERE username = %s", [username])
+def user_exsists(username, email):
+    # Get all Users in SQL
+    users = Users.query.all()
+    for user in users:
+        if username == user.username or email == user.email:
+            return True
 
-      # If no user exsists add user to DB
-      if result == 0:
-          cur.execute("INSERT INTO users(name, email, username, password, admin_level) VALUES(%s, %s, %s, %s, %s)", (name, email, username, password, 0))
-          mysql.connection.commit()
-          cur.close()
-          flash('You are now regiestered and can login!', 'success')
-      else:
-          flash('User Already Exsists!', 'danger')
+    # No matching user
+    return False
 
-      return render_template('register.html', form=form)
-
-  elif request.method == 'GET':
-      return render_template('register.html', form=form)
+# @users.route('/register', methods=['GET', 'POST'])
+# def register():
+#   form = RegisterForm(request.form)
+#   if request.method == 'POST' and form.validate():
+#
+#       # Create SQL form data
+#       name = form.name.data
+#       email = form.email.data
+#       username = form.username.data
+#       password = sha256_crypt.encrypt(str(form.password.data))
+#
+#       # Create Cursor
+#       cur = mysql.connection.cursor()
+#
+#       # Search for exsisting users
+#       result = cur.execute("SELECT * FROM users WHERE username = %s", [username])
+#
+#       # If no user exsists add user to DB
+#       if result == 0:
+#           cur.execute("INSERT INTO users(name, email, username, password, admin_level) VALUES(%s, %s, %s, %s, %s)", (name, email, username, password, 0))
+#           mysql.connection.commit()
+#           cur.close()
+#           flash('You are now regiestered and can login!', 'success')
+#       else:
+#           flash('User Already Exsists!', 'danger')
+#
+#       return render_template('register.html', form=form)
+#
+#   elif request.method == 'GET':
+#       return render_template('register.html', form=form)
 
 @users.route('/login', methods=['POST'])
 def login():

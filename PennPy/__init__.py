@@ -3,20 +3,10 @@ from flask_mysqldb import MySQL
 from PennPy.config import Config
 from flask_sqlalchemy import SQLAlchemy
 from PennPy.forms import RegistrationForm, LoginForm
+# from PennPy.models import User
 
 mysql = MySQL()
 db = SQLAlchemy()
-
-class Users(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    # image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
-    password = db.Column(db.String(60), nullable=False)
-    # posts = db.relationship('Post', backref='author', lazy=True)
-
-    def __repr__(self):
-        return f"User('{self.username}', '{self.email}')"
 
 def create_app(config_class=Config):
 
@@ -28,16 +18,7 @@ def create_app(config_class=Config):
     mysql.init_app(app)
     db.init_app(app)
 
-    @app.route("/sql", methods=['GET', 'POST'])
-    def register():
-        print(Users.query.all())
-        form = RegistrationForm()
-        if form.validate_on_submit():
-            flash(f'Account created for {form.username.data}!', 'success')
-            return redirect(url_for('main.index'))
-        return render_template('sql.html', title='Register', form=form)
-
-    # import PennPy.routes
+    # Import and init Blueprints
     from PennPy.main.routes import main
     from PennPy.users.routes import users
     from PennPy.products.routes import products
