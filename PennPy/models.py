@@ -13,3 +13,14 @@ class Users(db.Model):
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
+
+class Product(db.Model):
+    id = db.Column(db.String(255), unique=True, primary_key=True)
+    name = db.Column(db.String(100))
+    category = db.Column(db.String(100))
+    price = db.Column(db.Integer)
+    description = db.Column(db.String(255))
+    image_root = db.Column(db.String(100))
+
+    def __repr__(self):
+        return f"User('{self.name}', '{self.category}')"

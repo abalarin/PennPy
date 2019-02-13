@@ -6,7 +6,7 @@ import uuid
 from PennPy import db
 from PennPy.models import Users
 from PennPy.endpoints.products.routes import get_products
-from PennPy.forms import RegistrationForm, LoginForm
+from PennPy.endpoints.users.forms import RegistrationForm, LoginForm
 
 users = Blueprint('users', __name__)
 
@@ -52,6 +52,7 @@ def login():
 
     # If a user exsists and passwords match - login
     if result != None and sha256_crypt.verify(password_candidate, result.password):
+
         # Init session vars
         session['logged_in'] = True
         session['username'] = username

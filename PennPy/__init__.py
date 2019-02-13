@@ -2,7 +2,7 @@ from flask import Flask, render_template, flash, redirect, url_for
 from flask_mysqldb import MySQL
 from PennPy.config import Config
 from flask_sqlalchemy import SQLAlchemy
-from PennPy.forms import RegistrationForm, LoginForm
+from PennPy.endpoints.users.forms import RegistrationForm, LoginForm
 
 mysql = MySQL()
 db = SQLAlchemy()

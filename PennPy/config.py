@@ -15,7 +15,11 @@ class Config:
     MYSQL_DB = 'PennPy'
     MYSQL_CURSORCLASS = 'DictCursor'
 
+    # Does this do anything?
     static_folder = 'images'
 
+    # Change to envir var
     SECRET_KEY = 'secret123'
+
+    # Gets pwd and declares it is the root dir for the App
     APP_ROOT = os.path.dirname(os.path.abspath(__file__))
