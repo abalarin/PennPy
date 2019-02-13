@@ -1,5 +1,6 @@
 from flask import Blueprint, Flask, render_template, flash, request, redirect, url_for, session, logging, send_from_directory
 from passlib.hash import sha256_crypt
+import uuid
 
 # Homebuilt imports
 from PennPy import db

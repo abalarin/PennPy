@@ -1,2 +1,10 @@
 PennPy/static/images
 PennPy.egg-info
+
+# Ignore cached data
+PennPy/__init__.pyc
+PennPy/__pycache__
+PennPy/endpoints/__pycache__
+PennPy/endpoints/main/__pycache__
+PennPy/endpoints/products/__pycache__
+PennPy/endpoints/users/__pycache__
