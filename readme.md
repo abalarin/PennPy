@@ -10,14 +10,18 @@ The goal is to make a eCommerce site out of Python and Flask
 
 ## Directory Structure Breakdown
 ```
-PennPy/		
-	static/		Public resources
-	templates/	HTML renderers
-		includes/	HTML components
-	__init__.py			Entry point to the app
-	routes.py		API endpoints
-venv/			virtual environment
-setup.py 		Dependencies init, configure entry point
+Py/
+ Py/PennPy/
+  Py/PennPy/endpoints/ 		API
+  Py/PennPy/static/			Public Resources
+  Py/PennPy/templates/		UI - HTML
+   Py/PennPy/templates/includes/	HTML Components
+  Py/PennPy/__init__.py			App Entry Point
+  Py/PennPy/config.py				App dependecies 
+ Py/venv/					Virtual Envi
+ Py/setup.py	 			framework inits
+ Py/readme.md
+
 ```
 
 ## [MySQL](https://dev.mysql.com/downloads/mysql/) Setup

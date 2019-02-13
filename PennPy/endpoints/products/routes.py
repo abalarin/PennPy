@@ -1,6 +1,6 @@
 from flask import Blueprint, Flask, render_template, flash, request, redirect, url_for, logging, send_from_directory
 
-import uuid
+import uuid, os
 
 # Homebuilt imports
 from PennPy import mysql
@@ -21,7 +21,7 @@ def upload():
     image_root = "images/" + product_id + "/"
 
     # Create a target path for new product image(s)
-    target = os.path.join(Config.APP_ROOT, 'static/images/' + product_id)
+    target = Config.os.path.join(Config.APP_ROOT, 'static/images/' + product_id)
 
     # If not directory exsists create new one
     if not os.path.isdir(target):
