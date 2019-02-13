@@ -19,9 +19,9 @@ def create_app(config_class=Config):
     db.init_app(app)
 
     # Import and init Blueprints
-    from PennPy.main.routes import main
-    from PennPy.users.routes import users
-    from PennPy.products.routes import products
+    from PennPy.endpoints.main.routes import main
+    from PennPy.endpoints.users.routes import users
+    from PennPy.endpoints.products.routes import products
     app.register_blueprint(main)
     app.register_blueprint(users)
     app.register_blueprint(products)

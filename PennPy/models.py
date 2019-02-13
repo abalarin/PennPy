@@ -1,3 +1,6 @@
+#--------------------------------------------
+# Move into users endpoints
+#--------------------------------------------
 from PennPy import db
 
 class Users(db.Model):
@@ -6,6 +9,7 @@ class Users(db.Model):
     username = db.Column(db.String(120), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
+    admin_level = db.Column(db.Integer, default=0)
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
