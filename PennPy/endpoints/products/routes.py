@@ -1,13 +1,14 @@
 from flask import Blueprint, Flask, render_template, flash, request, redirect, url_for, logging, send_from_directory
 
-import uuid, os
+import uuid
 
 # Homebuilt imports
 from PennPy import mysql
 from PennPy.config import Config
 
 
-products =  Blueprint('products', __name__)
+products = Blueprint('products', __name__)
+
 
 @products.route('/upload', methods=['POST'])
 def upload():
@@ -35,16 +36,19 @@ def upload():
 
     # Create SQL Connection & INSERT our new product
     cur = mysql.connection.cursor()
-    cur.execute("INSERT INTO product(name, category, price, description, image_root, id) VALUES(%s, %s, %s, %s, %s, %s)", (product_name, product_category, product_price, product_description, image_root, product_id))
+    cur.execute("INSERT INTO product(name, category, price, description, image_root, id) VALUES(%s, %s, %s, %s, %s, %s)",
+                (product_name, product_category, product_price, product_description, image_root, product_id))
     mysql.connection.commit()
     cur.close()
 
     flash('Image Uploaded!', 'success')
     return redirect(url_for('users.dashboard'))
 
+
 @products.route('/images/<id>/<filename>')
 def get_image(id, filename):
-    return send_from_directory('static/images', id +'/' + filename)
+    return send_from_directory('static/images', id + '/' + filename)
+
 
 @products.route('/image/<id>')
 def get_images(id):
@@ -56,6 +60,7 @@ def get_images(id):
         return os.listdir(target)
 
     return False
+
 
 @products.route('/product/products', methods=['GET'])
 def get_products():
@@ -73,6 +78,8 @@ def get_products():
     return(products)
 
 # Validate the unique ID of our new product & prevent collisions
+
+
 def id_validator(uid):
     cur = mysql.connection.cursor()
     result = cur.execute("SELECT * FROM product WHERE id = %s", [uid])

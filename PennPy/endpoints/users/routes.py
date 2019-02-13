@@ -10,6 +10,7 @@ from PennPy.forms import RegistrationForm, LoginForm
 
 users = Blueprint('users', __name__)
 
+
 @users.route("/register", methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
@@ -18,7 +19,8 @@ def register():
     if form.validate_on_submit():
         # Create user object to insert into SQL
         hashed_pass = sha256_crypt.encrypt(str(form.password.data))
-        new_user = Users(name = form.name.data, username = form.username.data, email = form.email.data, password = hashed_pass)
+        new_user = Users(name=form.name.data, username=form.username.data,
+                         email=form.email.data, password=hashed_pass)
 
         if user_exsists(new_user.username, new_user.email):
             flash(f'{form.username.data} already exsists!', 'danger')
@@ -37,6 +39,7 @@ def register():
             return redirect(url_for('main.index'))
 
     return render_template('register.html', form=form)
+
 
 @users.route('/login', methods=['POST'])
 def login():
@@ -61,32 +64,37 @@ def login():
         flash('Incorrect Login!', 'danger')
         return redirect(url_for('main.index', error="No users found"))
 
+
 @users.route('/logout')
 def logout():
-  session.clear()
-  flash('Youve logged out!', 'success')
-  return redirect(url_for('main.index'))
+    session.clear()
+    flash('Youve logged out!', 'success')
+    return redirect(url_for('main.index'))
+
 
 @users.route('/profile')
 def profile():
     if 'username' in session:
         user = Users.query.filter_by(username=session['username']).first()
-        return render_template("profile.html", user = user)
+        return render_template("profile.html", user=user)
     else:
         return redirect(url_for('main.index'))
+
 
 @users.route('/dashboard')
 def dashboard():
     if 'username' in session:
         user = Users.query.filter_by(username=session['username']).first()
         if user.admin_level > 0:
-            return render_template("dashboard.html", products = get_products())
+            return render_template("dashboard.html", products=get_products())
         else:
-            return render_template("profile.html", user = user)
+            return render_template("profile.html", user=user)
     else:
         return redirect(url_for('main.index'))
 
 # Check if username or email are already taken
+
+
 def user_exsists(username, email):
     # Get all Users in SQL
     users = Users.query.all()

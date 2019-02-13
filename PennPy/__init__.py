@@ -3,14 +3,14 @@ from flask_mysqldb import MySQL
 from PennPy.config import Config
 from flask_sqlalchemy import SQLAlchemy
 from PennPy.forms import RegistrationForm, LoginForm
-# from PennPy.models import User
 
 mysql = MySQL()
 db = SQLAlchemy()
 
+
 def create_app(config_class=Config):
 
-    #Instantiate Application
+    # Instantiate Application
     app = Flask(__name__)
     app.config.from_object(Config)
 

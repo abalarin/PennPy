@@ -2,26 +2,26 @@
 {% block title %}eCommerce{% endblock %}
 
 {% block content %}
-  <h1>Hello, {{session.username}}</h1>
+<h1>Hello, {{session.username}}</h1>
 
-  <!-- Create Dashboard Menu  -->
-  <p>
-    <a class="btn btn-primary" data-toggle="collapse" href="#create_product" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Create Listing</a>
-    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#view_product">View Listings</button>
-    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">View All</button>
-  </p>
-  
-  <div class="row">
-    <div class="collapse multi-collapse" id="create_product">
-      <!-- Import create a product component -->
-      {% include 'includes/_create_product.html' %}
-    </div>
-    <br>
+<!-- Create Dashboard Menu  -->
+<p>
+  <a class="btn btn-primary" data-toggle="collapse" href="#create_product" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Create Listing</a>
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#view_product">View Listings</button>
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">View All</button>
+</p>
 
-    <div class="collapse multi-collapse" id="view_product">
-      <!-- Import create a product component -->
-      {% include 'includes/_product_card.html' %}
-    </div>
+<div class="row">
+  <div class="collapse multi-collapse" id="create_product">
+    <!-- Import create a product component -->
+    {% include 'includes/_create_product.html' %}
   </div>
+  <br>
+
+  <div class="collapse multi-collapse" id="view_product">
+    <!-- Import create a product component -->
+    {% include 'includes/_product_card.html' %}
+  </div>
+</div>
 
 {% endblock %}
