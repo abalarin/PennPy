@@ -12,13 +12,13 @@ The goal is to make a eCommerce site out of Python and Flask
 ```
 Py/
  Py/PennPy/
-  Py/PennPy/endpoints/ 		API
-  Py/PennPy/static/			Public Resources
-  Py/PennPy/templates/		UI - HTML
+  Py/PennPy/endpoints/ 		    API
+  Py/PennPy/static/	 	   Public Resources
+  Py/PennPy/templates/		   UI - HTML
    Py/PennPy/templates/includes/	HTML Components
   Py/PennPy/__init__.py			App Entry Point
-  Py/PennPy/config.py				App dependecies 
- Py/venv/					Virtual Envi
+  Py/PennPy/config.py			App dependecies 
+ Py/venv/				Virtual Envi
  Py/setup.py	 			framework inits
  Py/readme.md
 
