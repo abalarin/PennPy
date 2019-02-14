@@ -1,12 +1,9 @@
 from flask import Flask, render_template, flash, redirect, url_for
-from flask_mysqldb import MySQL
 from PennPy.config import Config
 from flask_sqlalchemy import SQLAlchemy
 from PennPy.endpoints.users.forms import RegistrationForm, LoginForm
 
-mysql = MySQL()
 db = SQLAlchemy()
-
 
 def create_app(config_class=Config):
 
@@ -15,7 +12,6 @@ def create_app(config_class=Config):
     app.config.from_object(Config)
 
     # Init Mysql
-    mysql.init_app(app)
     db.init_app(app)
 
     # Import and init Blueprints

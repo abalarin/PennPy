@@ -4,7 +4,6 @@ import uuid
 import os
 
 # Homebuilt imports
-from PennPy import mysql
 from PennPy import db
 from PennPy.config import Config
 from PennPy.models import Product
@@ -65,28 +64,24 @@ def get_images(id):
 
 @products.route('/product/products', methods=['GET'])
 def get_products():
-    # Create SQL Connection & Fetch all products
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM product")
-    products = cur.fetchall()
-    cur.close()
+    # Get all products in SQL
+    products = Product.query.all()
 
     # Get images for each product
     for product in products:
-        images = get_images(product["id"])
-        product['images'] = images
+        images = get_images(product.id)
+        product.images = images
 
     return(products)
 
 
-# Validate the unique ID of our new product & prevent collisions
+# Validate the unique ID of our new product to prevent collisions
 def id_validator(uid):
-    cur = mysql.connection.cursor()
-    result = cur.execute("SELECT * FROM product WHERE id = %s", [uid])
-    cur.close()
+    # Query for any product where id matches uid
+    result = Product.query.filter_by(id=uid).first()
 
     # If the ID exsists try again with new ID
-    if result > 0:
+    if result != None:
         id_validator(uuid.uuid4())
 
     return uid

@@ -84,7 +84,10 @@ def profile():
 
 @users.route('/dashboard')
 def dashboard():
+    # If a session exsists redirect based on admin_level
     if 'username' in session:
+
+        # Pull all users data based off of their username stored in current session
         user = Users.query.filter_by(username=session['username']).first()
         if user.admin_level > 0:
             return render_template("dashboard.html", products=get_products())
@@ -93,9 +96,8 @@ def dashboard():
     else:
         return redirect(url_for('main.index'))
 
+
 # Check if username or email are already taken
-
-
 def user_exsists(username, email):
     # Get all Users in SQL
     users = Users.query.all()
