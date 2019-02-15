@@ -1,6 +1,7 @@
 from flask import Flask, render_template, flash, redirect, url_for
-from PennPy.config import Config
 from flask_sqlalchemy import SQLAlchemy
+
+from PennPy.config import Config
 from PennPy.endpoints.users.forms import RegistrationForm, LoginForm
 
 db = SQLAlchemy()

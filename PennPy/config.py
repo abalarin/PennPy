@@ -8,13 +8,6 @@ class Config:
     # To suppress FSADeprecationWarning
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    # Removing after migrate to SQLAlchemy
-    MYSQL_HOST = 'localhost'
-    MYSQL_USER = 'root'
-    MYSQL_PASSWORD = 'linode!'
-    MYSQL_DB = 'PennPy'
-    MYSQL_CURSORCLASS = 'DictCursor'
-
     # Does this do anything?
     static_folder = 'images'
 

@@ -1,6 +1,7 @@
 #--------------------------------------------
 # Move into users endpoints
 #--------------------------------------------
+from sqlalchemy.sql import func
 from PennPy import db
 
 class Users(db.Model):
@@ -9,6 +10,7 @@ class Users(db.Model):
     username = db.Column(db.String(120), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
+    register_date = db.Column(db.DateTime(timezone=True), server_default=func.now())
     admin_level = db.Column(db.Integer, default=0)
 
     def __repr__(self):
