@@ -1,0 +1,49 @@
+<style media="screen">
+  .sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    /* Behind the navbar */
+    padding: 50px 0 0 0;
+  }
+</style>
+
+<div class="row">
+  <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+    <div class="sidebar-sticky">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <h2 class="nav-link"> {{session.username}} </h2>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="collapse" data-target="#view_product" href="#">
+            View Listings
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="collapse" href="#create_product">
+            Create Listing
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <span data-feather="users"></span>
+            Implement
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            Implement
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            Implement
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
