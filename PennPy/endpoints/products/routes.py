@@ -61,7 +61,7 @@ def get_images(id):
 
     return False
 
-#remove-->
+# remove-->
 @products.route('/product/products', methods=['GET'])
 def get_products():
     # Get all products in SQL
@@ -74,13 +74,15 @@ def get_products():
 
     return(products)
 
-## Implement - Product Page
+
 @products.route('/product/<id>', methods=['GET'])
 def get_product(id):
     product = Product.query.filter_by(id=id).first()
-    print(product)
-    product.images = get_images(product.id)
-    return render_template("listing.html", product=product)
+    if product != None:
+        product.images = get_images(product.id)
+        return render_template("listing.html", product=product)
+    else:
+        return redirect(url_for('main.index'))
 
 
 # Validate the unique ID of our new product to prevent collisions

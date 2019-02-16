@@ -39,6 +39,9 @@
     transform: translate(-50%, -50%);
     text-align: center;
   }
+  h5 {
+    color: white;
+  }
 </style>
 
 <div class="row">
@@ -48,16 +51,15 @@
 
       <img class="product_img" src="{{url_for('products.get_image', id=product.id, filename=product.images[0])}}" onerror="this.onerror=null;this.src='/static/images/noimage.png';">
 
-      <a href="/product/{{product.id}}">
-        <div class="overlay">
-          <div class="text" href="/product/{{product.id}}">
-            <h5 class="card-title">{{product.name}} - <em>{{product.category}}</em></h5>
-            <h6> ${{product.price}} </h6>
-            <p class="card-text">{{product.description}}</p>
-          </div>
+      <div class="overlay">
+        <div class="text" href="/product/{{product.id}}">
+          <a href="#"><h5>PUBLISH</h5></a>
+          <h5 class="card-title">{{product.name}} - <em>{{product.category}}</em></h5>
+          <h6> ${{product.price}} </h6>
+          <p class="card-text">{{product.description}}</p>
+          <a href="#"><h5>EDIT</h5></a>
         </div>
-      </a>
-
+      </div>
     </div>
   </div>
   {% endfor %}
