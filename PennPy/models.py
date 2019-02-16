@@ -22,7 +22,6 @@ class Product(db.Model):
     category = db.Column(db.String(100))
     price = db.Column(db.Integer)
     description = db.Column(db.String(255))
-    image_root = db.Column(db.String(100))
 
     def __repr__(self):
         return f"User('{self.name}', '{self.category}')"

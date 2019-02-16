@@ -7,6 +7,7 @@ import os
 from PennPy import db
 from PennPy.config import Config
 from PennPy.models import Product
+from PennPy.endpoints.products.forms import CreateListingForm
 
 
 products = Blueprint('products', __name__)
@@ -14,35 +15,39 @@ products = Blueprint('products', __name__)
 
 @products.route('/upload', methods=['POST'])
 def upload():
-    # Create SQL Product Object - Could be condensed into is own func?
-    product_id = str(id_validator(uuid.uuid4()))
-    product_name = request.form.get('product_name')
-    product_category = request.form.get('product_category')
-    product_price = request.form.get('product_cost')
-    product_description = request.form.get('product_description')
-    image_root = "images/" + product_id + "/"
+    form = CreateListingForm()
 
-    # Create Product object to insert into SQL
-    new_product = Product(id=product_id, name=product_name, category=product_category,
-                          price=product_price, description=product_description, image_root=image_root)
+    print(form.validate_on_submit())
 
-    # Create a target path for new product image(s) & create director
-    target = os.path.join(Config.APP_ROOT, 'static/images/' + product_id)
-    os.mkdir(target)
+    if form.validate_on_submit():
 
-    # Loop through files & save to file system
-    for image in request.files.getlist("product_images"):
-        print("{} is the file name".format(image.filename))
-        filename = image.filename
-        destination = "/".join([target, filename])
-        image.save(destination)
+        # Make a unique product ID
+        product_id = str(id_validator(uuid.uuid4()))
 
-    # Insert Product into SQL db
-    db.session.add(new_product)
-    db.session.commit()
+        # Create Product object to insert into SQL
+        new_product = Product(id=product_id, name=form.title.data, category=form.category.data, price=form.price.data, description=form.description.data)
 
-    flash('Product Created!', 'success')
-    return redirect(url_for('users.dashboard'))
+        print(new_product)
+
+        # Create a target path for new product image(s) & create director
+        target = os.path.join(Config.APP_ROOT, 'static/images/' + product_id)
+        os.mkdir(target)
+
+        # Loop through files & save to file system
+        for image in request.files.getlist("product_images"):
+            print("{} is the file name".format(image.filename))
+            filename = image.filename
+            destination = "/".join([target, filename])
+            image.save(destination)
+
+        # Insert Product into SQL db
+        db.session.add(new_product)
+        db.session.commit()
+
+        flash('Product Created!', 'success')
+        return redirect(url_for('users.dashboard'))
+    else:
+        return render_template('dashboard.html', form=form)
 
 
 @products.route('/images/<id>/<filename>')

@@ -6,6 +6,7 @@ import uuid
 from PennPy import db
 from PennPy.models import Users
 from PennPy.endpoints.products.routes import get_products
+from PennPy.endpoints.products.forms import CreateListingForm
 from PennPy.endpoints.users.forms import RegistrationForm, LoginForm
 
 users = Blueprint('users', __name__)
@@ -90,7 +91,7 @@ def dashboard():
         # Pull all users data based off of their username stored in current session
         user = Users.query.filter_by(username=session['username']).first()
         if user.admin_level > 0:
-            return render_template("dashboard.html", products=get_products())
+            return render_template("dashboard.html", products=get_products(), form=CreateListingForm())
         else:
             return render_template("profile.html", user=user)
     else:

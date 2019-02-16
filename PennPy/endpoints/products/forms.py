@@ -1,6 +1,11 @@
-# from flask_wtf import FlaskForm
-# from wtforms import StringField, PasswordField, SubmitField, BooleanField
-# from wtforms.validators import DataRequired, Length, Email, EqualTo
-#
-#
-# class CreationForm(FlaskForm):
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField, IntegerField, TextField, TextAreaField, SelectField
+from wtforms.validators import DataRequired, Length, Email, EqualTo
+
+
+class CreateListingForm(FlaskForm):
+    title = TextField('Product Name', validators=[DataRequired()])
+    category = SelectField('Product Category', choices=[('Pillow', 'Pillow'), ('Blanket', 'Blanket')])
+    price = IntegerField('Price', validators=[DataRequired()])
+    description = TextAreaField('Description', validators=[DataRequired()])
+    submit = SubmitField("Create Product")
