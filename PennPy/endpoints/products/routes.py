@@ -74,6 +74,13 @@ def get_products():
 
     return(products)
 
+## Implement - Product Page
+@products.route('/product/<id>', methods=['GET'])
+def get_product(id):
+    product = Product.query.filter_by(id=id).first()
+    print(product)
+    return redirect(url_for('main.index'))
+
 
 # Validate the unique ID of our new product to prevent collisions
 def id_validator(uid):
