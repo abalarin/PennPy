@@ -12,41 +12,108 @@
   .price {
     font-size: 30px;
   }
+
+/* The grid: Four equal columns that floats next to each other */
+.column {
+  position: relative;
+  width: 25%;
+  padding: 10px;
+}
+
+/* Style the images inside the grid */
+.column img {
+  cursor: pointer;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  transition: .5s ease;
+}
+
+#container:hover img {
+  opacity: 0.8;
+}
+
+#container:hover .overlay{
+  opacity: 1;
+}
+
+.text {
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  left: 10%;
+  text-align: center;
+}
+
+.delete {
+  color: red;
+  font-size: 60px;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+a:hover {
+  color: grey;
+}
+
+.upload img:hover {
+  opacity: 0.8;
+}
+
+.upload img {
+  /* background-image: url('/static/images/upload.png'); */
+  max-width: 200px;
+}
+.upload input{
+  display: none;
+}
+
 </style>
 
 <div class="container-fluid body">
-  <div class="row">
-    <div class="col-8">
 
-      <div id="listingIndicators" class="carousel slide" data-ride="carousel">
-        <ol class="carousel-indicators">
-          {% for image in product.images %}
-          <li data-target="#listingIndicators" data-slide-to="{{loop.index-1}}" class="item{% if loop.index == 1 %} active{% endif %}"></li>
-          {% endfor %}
-        </ol>
-        <div class="carousel-inner">
+  <form method="post" action="{{url_for('products.update', id=product.id)}}" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
 
-          {% for image in product.images %}
-          <div class="carousel-item product_img item{% if loop.index == 1 %} active{% endif %}">
-            <img class="d-block w-100" src="{{url_for('products.get_image', id=product.id, filename=image)}}" alt="First slide">
+    <div class="row">
+      <div class="col-8">
+
+        <div id="listingIndicators" class="carousel slide" data-ride="carousel">
+          <ol class="carousel-indicators">
+            {% for image in product.images %}
+            <li data-target="#listingIndicators" data-slide-to="{{loop.index-1}}" class="item{% if loop.index == 1 %} active{% endif %}"></li>
+            {% endfor %}
+          </ol>
+          <div class="carousel-inner">
+
+            {% for image in product.images %}
+            <div class="carousel-item product_img item{% if loop.index == 1 %} active{% endif %}">
+              <img class="d-block w-100" src="{{url_for('products.get_image', id=product.id, filename=image)}}" alt="First slide">
+            </div>
+            {% endfor %}
+
           </div>
-          {% endfor %}
-
+          <a class="carousel-control-prev" href="#listingIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#listingIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
         </div>
-        <a class="carousel-control-prev" href="#listingIndicators" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#listingIndicators" role="button" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
-        </a>
       </div>
-    </div>
 
-    <div class="col-4">
-      <form method="post" action="{{url_for('products.update', id=product.id)}}"  enctype="multipart/form-data">
-        {{ form.hidden_tag() }}
+      <div class="col-4">
         <fieldset>
           <div class="form-group">
             <div class="form-row">
@@ -75,9 +142,39 @@
             <button type="button" class="btn btn-danger">Delete</button>
           </a>
         </fieldset>
-      </form>
+      </div>
     </div>
-  </div>
+
+
+
+    <!-- Product Images -->
+    <div class="row">
+
+      {% for image in product.images %}
+      <div id="container" class="column">
+        <img src="{{url_for('products.get_image', id=product.id, filename=image)}}" style="width:100%">
+
+        <div class="overlay">
+          <div class="text">
+            <h5>
+              <a class="delete" href="#">&times;</a>
+            </h5>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+      <div class="column upload">
+        <label for="image-upload">
+          <img src="/static/upload.png">
+        </label>
+        <input id="image-upload" type="file" accept="image/*" multiple>
+
+      </div>
+    </div>
+    <!-- Product Images -->
+
+  </form>
 
 </div>
 

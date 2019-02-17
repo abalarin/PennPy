@@ -1,5 +1,5 @@
 #--------------------------------------------
-# Move into users endpoints
+# Move into respective endpoints
 #--------------------------------------------
 from sqlalchemy.sql import func
 from PennPy import db
