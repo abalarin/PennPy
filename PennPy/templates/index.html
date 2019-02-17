@@ -2,14 +2,22 @@
 {% block title %} eComm{% endblock %}
 
 {% block content %}
+
+<style media="screen">
+  .homepage {
+    margin-bottom: 100px;
+  }
+</style>
+
 <div class="jumbotron text-center">
   <h1>This is the Flask App</h1>
   <p>This is a soon to be eCommerce site</p>
 </div>
 
 <h2> Products </h2>
-
-<!-- Import create a product component -->
-{% include 'includes/_product_card.html' %}
+<div class="homepage">
+  <!-- Import create a product component -->
+  {% include 'includes/_product_card.html' %}
+</div>
 
 {% endblock %}

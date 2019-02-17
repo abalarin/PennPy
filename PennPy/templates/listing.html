@@ -9,6 +9,9 @@
   .body{
     margin-top: 90px;
   }
+  .purchase:link {
+    text-decoration: none;
+  }
 </style>
 <div class="container-fluid body">
   <div class="row">
@@ -45,7 +48,9 @@
       <h3>${{product.price}}</h3>
       <h4>Description</h4>
       <p>{{product.description}}</p>
+      <a class="purchase" href="{{url_for('orders.purchase', id=product.id)}}">
       <button type="button" class="btn btn-success btn-lg btn-block">Purchase</button>
+      </a>
     </div>
   </div>
 

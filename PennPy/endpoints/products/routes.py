@@ -23,7 +23,8 @@ def upload():
         product_id = str(id_validator(uuid.uuid4()))
 
         # Create Product object to insert into SQL
-        new_product = Product(id=product_id, name=form.title.data, category=form.category.data, price=form.price.data, description=form.description.data)
+        new_product = Product(id=product_id, name=form.title.data, category=form.category.data,
+                              price=form.price.data, description=form.description.data)
 
         # Create a target path for new product image(s) & create director
         target = os.path.join(Config.APP_ROOT, 'static/images/' + product_id)
@@ -44,6 +45,7 @@ def upload():
         return redirect(url_for('users.dashboard'))
     else:
         return render_template('dashboard.html', form=form)
+
 
 @products.route('/update/<id>', methods=['GET', 'POST'])
 def update(id):
@@ -69,7 +71,6 @@ def update(id):
             return render_template("admin_listing.html", product=product, form=form)
 
 
-
 @products.route('/delete/<id>')
 def delete_listing(id):
     if session['admin_level'] > 0:
@@ -90,7 +91,14 @@ def get_image(id, filename):
     return send_from_directory('static/images', id + '/' + filename)
 
 
-@products.route('/image/<id>')
+@products.route('/product/<id>', methods=['GET'])
+def get_product(id):
+    product = Product.query.get_or_404(id)
+    product.images = get_images(product.id)
+
+    return render_template("listing.html", product=product)
+
+#------------ MOVE Out of routes-------------------
 def get_images(id):
     # Create a path with the ID & the root of our App
     target = os.path.join(Config.APP_ROOT, 'static/images/' + id)
@@ -101,8 +109,7 @@ def get_images(id):
 
     return False
 
-# remove-->
-@products.route('/product/products', methods=['GET'])
+
 def get_products():
     # Get all products in SQL
     products = Product.query.all()
@@ -115,15 +122,6 @@ def get_products():
     return(products)
 
 
-@products.route('/product/<id>', methods=['GET'])
-def get_product(id):
-    product = Product.query.get_or_404(id)
-    product.images = get_images(product.id)
-
-    return render_template("listing.html", product=product)
-
-
-
 # Validate the unique ID of our new product to prevent collisions
 def id_validator(uid):
     # Query for any product where id matches uid
@@ -134,3 +132,5 @@ def id_validator(uid):
         id_validator(uuid.uuid4())
 
     return uid
+
+#------------ MOVE Out of routes-------------------

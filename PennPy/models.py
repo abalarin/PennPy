@@ -14,7 +14,7 @@ class Users(db.Model):
     admin_level = db.Column(db.Integer, default=0)
 
     def __repr__(self):
-        return User('{self.username}', '{self.email}')
+        return(self.username + ", " + self.email)
 
 class Product(db.Model):
     id = db.Column(db.String(255), unique=True, primary_key=True)
@@ -24,4 +24,4 @@ class Product(db.Model):
     description = db.Column(db.String(255))
 
     def __repr__(self):
-        return Product('{self.name}', '{self.category}')
+        return(self.name + ", " + self.category)
