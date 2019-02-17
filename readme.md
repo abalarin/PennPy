@@ -1,6 +1,11 @@
-# This is my Python Web App
+# This is my Python Web App [PennPy](http://pennpy.com/)
 The goal is to make a eCommerce site out of Python and Flask
 
+```
+Admin Login: 
+username: jdoe
+password: rowan
+```
 ## Getting Started
 ### Required Things
 
