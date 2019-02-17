@@ -24,7 +24,7 @@ def register():
                          email=form.email.data, password=hashed_pass)
 
         if user_exsists(new_user.username, new_user.email):
-            flash(f'{form.username.data} already exsists!', 'danger')
+            flash('User already exsists!', 'danger')
             return render_template('register.html', form=form)
         else:
             # Insert new user into SQL
@@ -36,7 +36,7 @@ def register():
             session['username'] = new_user.username
             session['admin_level'] = 0
 
-            flash(f'Account created for {form.username.data}!', 'success')
+            flash('Account created!', 'success')
             return redirect(url_for('main.index'))
 
     return render_template('register.html', form=form)
