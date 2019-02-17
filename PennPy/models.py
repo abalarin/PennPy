@@ -24,4 +24,4 @@ class Product(db.Model):
     description = db.Column(db.String(255))
 
     def __repr__(self):
-        return f"User('{self.name}', '{self.category}')"
+        return f"Product('{self.name}', '{self.category}')"

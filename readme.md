@@ -12,13 +12,13 @@ The goal is to make a eCommerce site out of Python and Flask
 ```
 Py/
  Py/PennPy/
-  Py/PennPy/endpoints/ 		    API
-  Py/PennPy/static/	 	   Public Resources
-  Py/PennPy/templates/		   UI - HTML
+  Py/PennPy/endpoints/ 		API
+  Py/PennPy/static/			Public Resources
+  Py/PennPy/templates/		UI - HTML
    Py/PennPy/templates/includes/	HTML Components
   Py/PennPy/__init__.py			App Entry Point
-  Py/PennPy/config.py			App dependecies 
- Py/venv/				Virtual Envi
+  Py/PennPy/config.py				App dependecies 
+ Py/venv/					Virtual Envi
  Py/setup.py	 			framework inits
  Py/readme.md
 
@@ -26,6 +26,7 @@ Py/
 
 ## [MySQL](https://dev.mysql.com/downloads/mysql/) Setup
 On installation when you init a databade you should be asked to enter a password, make sure you remember it...
+[More SQL Resourcees](https://pypi.org/project/mysqlclient/)
 
 ```
 # Verify SQLs installed properlly
@@ -42,7 +43,8 @@ $ export PATH=${PATH}:/path/to/mysql/bin
 $ mysql -u root -p
 # pass prompt
 
-mysql> CREATE TABLE users(id INT(11) AUTO_INCREMENT PRIMARY KEY, name varchar(100), email varchar(100), username varchar(30), password varchar(100)); 
+mysql> CREATE TABLE users(id INT(11) AUTO_INCREMENT PRIMARY KEY, name varchar(100), email varchar(100), username varchar(30), password varchar(100), admin_level int(11), register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+mysql> CREATE TABLE product(id varchar(255) PRIMARY KEY, name varchar(100), category varchar(100), price int(11), description varchar(255)); 
 ```
 ## [Pip](https://pip.pypa.io/en/stable/installing/) Setup
 **pip** is a package management system used to install and manage software packages written in Python. You should already have **Python** installed, which should come with pip, if not:

@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+{% block title %}eCommerce{% endblock %}
+
+{% block content %}
+<style media="screen">
+  .product_img {
+    height: 300px;
+  }
+  .body{
+    margin-top: 90px;
+  }
+  .price {
+    font-size: 30px;
+  }
+</style>
+
+<div class="container-fluid body">
+  <div class="row">
+    <div class="col-8">
+
+      <div id="listingIndicators" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+          {% for image in product.images %}
+          <li data-target="#listingIndicators" data-slide-to="{{loop.index-1}}" class="item{% if loop.index == 1 %} active{% endif %}"></li>
+          {% endfor %}
+        </ol>
+        <div class="carousel-inner">
+
+          {% for image in product.images %}
+          <div class="carousel-item product_img item{% if loop.index == 1 %} active{% endif %}">
+            <img class="d-block w-100" src="{{url_for('products.get_image', id=product.id, filename=image)}}" alt="First slide">
+          </div>
+          {% endfor %}
+
+        </div>
+        <a class="carousel-control-prev" href="#listingIndicators" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#listingIndicators" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="col-4">
+      <form method="post" action="{{url_for('products.update', id=product.id)}}"  enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <fieldset>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col-md-6">
+                {{form.title(class="form-control-plaintext", value=product.name)}}
+              </div>
+
+              <div class="col-md-4">
+                {{form.category(class="form-control", value=product.category)}}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-check-inline price">
+            <span class="currency">$</span>
+            {{form.price(class="form-control-plaintext", value=product.price)}}
+          </div>
+
+          <div class="form-group">
+            {{form.description.label}}
+            {{form.description(class="form-control-plaintext")}}
+          </div>
+
+          {{form.update(class="btn btn-primary")}}
+          <a href="/delete/{{product.id}}">
+            <button type="button" class="btn btn-danger">Delete</button>
+          </a>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

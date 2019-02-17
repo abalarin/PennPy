@@ -1,13 +1,14 @@
-from flask import Blueprint, Flask, render_template, flash, request, redirect, url_for, logging, send_from_directory
+from flask import Blueprint, Flask, render_template, flash, request, redirect, url_for, logging, send_from_directory, session, escape
 
 import uuid
 import os
+import shutil
 
 # Homebuilt imports
 from PennPy import db
 from PennPy.config import Config
 from PennPy.models import Product
-from PennPy.endpoints.products.forms import CreateListingForm
+from PennPy.endpoints.products.forms import CreateListingForm, UpdateListingForm
 
 
 products = Blueprint('products', __name__)
@@ -17,17 +18,12 @@ products = Blueprint('products', __name__)
 def upload():
     form = CreateListingForm()
 
-    print(form.validate_on_submit())
-
     if form.validate_on_submit():
-
         # Make a unique product ID
         product_id = str(id_validator(uuid.uuid4()))
 
         # Create Product object to insert into SQL
         new_product = Product(id=product_id, name=form.title.data, category=form.category.data, price=form.price.data, description=form.description.data)
-
-        print(new_product)
 
         # Create a target path for new product image(s) & create director
         target = os.path.join(Config.APP_ROOT, 'static/images/' + product_id)
@@ -35,7 +31,7 @@ def upload():
 
         # Loop through files & save to file system
         for image in request.files.getlist("product_images"):
-            print("{} is the file name".format(image.filename))
+            # print("{} is the file name".format(image.filename))
             filename = image.filename
             destination = "/".join([target, filename])
             image.save(destination)
@@ -48,6 +44,45 @@ def upload():
         return redirect(url_for('users.dashboard'))
     else:
         return render_template('dashboard.html', form=form)
+
+@products.route('/update/<id>', methods=['GET', 'POST'])
+def update(id):
+    if 'username' in session and session['admin_level'] > 0:
+        form = UpdateListingForm()
+        product = Product.query.get_or_404(id)
+
+        if form.validate_on_submit():
+
+            # Reassign values to update SQL entry
+            product.name = form.title.data
+            product.category = form.category.data
+            product.price = form.price.data
+            product.description = form.description.data
+
+            db.session.commit()
+            return redirect(url_for('products.get_product', id=product.id))
+
+        elif request.method == 'GET':
+            product.images = get_images(product.id)
+            form.description.data = product.description
+
+            return render_template("admin_listing.html", product=product, form=form)
+
+
+
+@products.route('/delete/<id>')
+def delete_listing(id):
+    if session['admin_level'] > 0:
+        product = Product.query.get(id)
+
+        target = os.path.join(Config.APP_ROOT, 'static/images/' + id)
+        shutil.rmtree(target, ignore_errors=True)
+
+        db.session.delete(product)
+        db.session.commit()
+
+        flash('Your listing has been deleted!', 'success')
+        return redirect(url_for('users.dashboard'))
 
 
 @products.route('/images/<id>/<filename>')
@@ -82,12 +117,11 @@ def get_products():
 
 @products.route('/product/<id>', methods=['GET'])
 def get_product(id):
-    product = Product.query.filter_by(id=id).first()
-    if product != None:
-        product.images = get_images(product.id)
-        return render_template("listing.html", product=product)
-    else:
-        return redirect(url_for('main.index'))
+    product = Product.query.get_or_404(id)
+    product.images = get_images(product.id)
+
+    return render_template("listing.html", product=product)
+
 
 
 # Validate the unique ID of our new product to prevent collisions

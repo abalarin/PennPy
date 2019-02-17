@@ -39,8 +39,22 @@
     transform: translate(-50%, -50%);
     text-align: center;
   }
-  h5 {
+
+  .edit {
     color: white;
+  }
+
+  .delete {
+    color: red;
+    font-size: 30px;
+  }
+
+  a:link {
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: grey;
   }
 </style>
 
@@ -52,12 +66,19 @@
       <img class="product_img" src="{{url_for('products.get_image', id=product.id, filename=product.images[0])}}" onerror="this.onerror=null;this.src='/static/images/noimage.png';">
 
       <div class="overlay">
-        <div class="text" href="/product/{{product.id}}">
-          <a href="#"><h5>PUBLISH</h5></a>
+        <div class="text">
+          <h5>
+            <a class="edit" href="/update/{{product.id}}">PUBLISH</a>
+
+            <a class="edit" href="/update/{{product.id}}">EDIT</a>
+          </h5>
+
           <h5 class="card-title">{{product.name}} - <em>{{product.category}}</em></h5>
           <h6> ${{product.price}} </h6>
           <p class="card-text">{{product.description}}</p>
-          <a href="#"><h5>EDIT</h5></a>
+          <h5>
+            <a class="delete" href="/delete/{{product.id}}">&times;</a>
+          </h5>
         </div>
       </div>
     </div>
