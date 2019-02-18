@@ -120,3 +120,18 @@ $ flask run
  * Debugger PIN: 222-305-860
 
 ```
+
+## Deployment onto Ubuntu Instance
+#####Things needed on said instance
+- Gunicorn
+- nginx
+- python
+- pip
+- mysql(postgre)
+
+```
+git pull this
+gunicorn --bind 0.0.0.0:8000 "__init__:create_app()"
+```
+
+Hopefully integrate with gitlabs and get some CD/CI going...

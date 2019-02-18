@@ -26,16 +26,8 @@ def upload():
         new_product = Product(id=product_id, name=form.title.data, category=form.category.data,
                               price=form.price.data, description=form.description.data)
 
-        # Create a target path for new product image(s) & create director
-        target = os.path.join(Config.APP_ROOT, 'static/images/' + product_id)
-        os.mkdir(target)
-
-        # Loop through files & save to file system
-        for image in request.files.getlist("product_images"):
-            # print("{} is the file name".format(image.filename))
-            filename = image.filename
-            destination = "/".join([target, filename])
-            image.save(destination)
+        # Upload Images
+        upload_images(request.files.getlist("product_images"), product_id)
 
         # Insert Product into SQL db
         db.session.add(new_product)
@@ -49,25 +41,29 @@ def upload():
 
 @products.route('/update/<id>', methods=['GET', 'POST'])
 def update(id):
+
+    # First authenticate user is logged in and an ADMIN
     if 'username' in session and session['admin_level'] > 0:
         form = UpdateListingForm()
         product = Product.query.get_or_404(id)
 
         if form.validate_on_submit():
 
+            # Get newly added images from req object and upload them to exsisting directory
+            upload_images(request.files.getlist("product_images"), product.id)
+
             # Reassign values to update SQL entry
             product.name = form.title.data
             product.category = form.category.data
             product.price = form.price.data
             product.description = form.description.data
-
             db.session.commit()
+
             return redirect(url_for('products.get_product', id=product.id))
 
         elif request.method == 'GET':
             product.images = get_images(product.id)
             form.description.data = product.description
-
             return render_template("admin_listing.html", product=product, form=form)
 
 
@@ -77,7 +73,9 @@ def delete_listing(id):
         product = Product.query.get(id)
 
         target = os.path.join(Config.APP_ROOT, 'static/images/' + id)
-        shutil.rmtree(target, ignore_errors=True)
+
+        if os.path.isdir(target):
+            shutil.rmtree(target, ignore_errors=True)
 
         db.session.delete(product)
         db.session.commit()
@@ -98,7 +96,26 @@ def get_product(id):
 
     return render_template("listing.html", product=product)
 
-#------------ MOVE Out of routes-------------------
+
+# ------------ MOVE Out of routes-------------------
+
+
+def upload_images(images, product_id):
+
+    # Create a target path using product ID
+    target = os.path.join(Config.APP_ROOT, 'static/images/' + product_id)
+
+    # If target director exsist then this is just an update, no need to create new dir
+    if not os.path.isdir(target):
+        os.mkdir(target)
+
+    # Loop through all images and upload
+    for image in images:
+        filename = image.filename
+        destination = "/".join([target, filename])
+        image.save(destination)
+
+
 def get_images(id):
     # Create a path with the ID & the root of our App
     target = os.path.join(Config.APP_ROOT, 'static/images/' + id)
@@ -133,4 +150,4 @@ def id_validator(uid):
 
     return uid
 
-#------------ MOVE Out of routes-------------------
+# ------------ MOVE Out of routes-------------------

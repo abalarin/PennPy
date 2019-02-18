@@ -147,7 +147,7 @@ a:hover {
 
 
 
-    <!-- Product Images -->
+    <!-- Product Images -Upload/Delete Images-->
     <div class="row">
 
       {% for image in product.images %}
@@ -168,7 +168,7 @@ a:hover {
         <label for="image-upload">
           <img src="/static/upload.png">
         </label>
-        <input id="image-upload" type="file" accept="image/*" multiple>
+        <input id="image-upload" type="file" accept="image/*" name="product_images" multiple>
 
       </div>
     </div>
