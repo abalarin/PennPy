@@ -153,7 +153,6 @@ a:hover {
     <div class="row">
 
       {% for image in product.images %}
-      <!-- <input type="text" name="image_filename" value="{{image}}" hidden> -->
       <div id="container" class="column">
         <img src="{{url_for('products.get_image', id=product.id, filename=image)}}" style="width:100%">
 
