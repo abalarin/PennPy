@@ -66,6 +66,9 @@ def update(id):
             form.description.data = product.description
             return render_template("admin_listing.html", product=product, form=form)
 
+# @products.route('/update/<id>/<filename', methods=['GET', 'POST'])
+# def update(id):
+
 
 @products.route('/delete/<id>')
 def delete_listing(id):
@@ -82,6 +85,16 @@ def delete_listing(id):
 
         flash('Your listing has been deleted!', 'success')
         return redirect(url_for('users.dashboard'))
+
+
+@products.route('/delete/<id>/<filename>')
+def delete_image(id, filename):
+    if session['admin_level'] > 0:
+        target = os.path.join(
+            Config.APP_ROOT, 'static/images/' + id + "/" + filename)
+        os.remove(target)
+
+        return redirect(url_for("products.update", id=id))
 
 
 @products.route('/images/<id>/<filename>')

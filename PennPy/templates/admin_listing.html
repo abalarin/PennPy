@@ -93,6 +93,7 @@ a:hover {
             <li data-target="#listingIndicators" data-slide-to="{{loop.index-1}}" class="item{% if loop.index == 1 %} active{% endif %}"></li>
             {% endfor %}
           </ol>
+
           <div class="carousel-inner">
 
             {% for image in product.images %}
@@ -102,6 +103,7 @@ a:hover {
             {% endfor %}
 
           </div>
+
           <a class="carousel-control-prev" href="#listingIndicators" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="sr-only">Previous</span>
@@ -151,13 +153,15 @@ a:hover {
     <div class="row">
 
       {% for image in product.images %}
+      <!-- <input type="text" name="image_filename" value="{{image}}" hidden> -->
       <div id="container" class="column">
         <img src="{{url_for('products.get_image', id=product.id, filename=image)}}" style="width:100%">
 
         <div class="overlay">
           <div class="text">
             <h5>
-              <a class="delete" href="#">&times;</a>
+              {{image}}
+              <a class="delete" href="/delete/{{product.id}}/{{image}} ">&times;</a>
             </h5>
           </div>
         </div>
