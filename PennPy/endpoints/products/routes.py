@@ -14,7 +14,7 @@ from PennPy.endpoints.products.utils import upload_images, get_images, id_valida
 
 products = Blueprint('products', __name__)
 
-
+# POST
 @products.route('/upload', methods=['POST'])
 def upload():
     form = CreateListingForm()
