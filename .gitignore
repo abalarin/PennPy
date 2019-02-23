@@ -1,5 +1,7 @@
 # Atom package manager
 setup.cfg
+venv/
+
 PennPy/config.py
 
 PennPy/static/images/*
