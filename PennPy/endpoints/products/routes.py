@@ -7,7 +7,7 @@ import shutil
 # Homebuilt imports
 from PennPy import db
 from PennPy.config import Config
-from PennPy.models import Products
+from PennPy.models import Product
 from PennPy.endpoints.products.forms import CreateListingForm, UpdateListingForm
 
 from PennPy.endpoints.products.utils import upload_images, get_images, id_validator
@@ -24,7 +24,7 @@ def upload():
         product_id = str(id_validator(uuid.uuid4()))
 
         # Create Product object to insert into SQL
-        new_product = Products(
+        new_product = Product(
             id=product_id,
             name=form.title.data,
             category=form.category.data,
@@ -50,7 +50,7 @@ def update(id):
     # First authenticate user is logged in and an ADMIN
     if 'username' in session and session['admin_level'] > 0:
         form = UpdateListingForm()
-        product = Products.query.get_or_404(id)
+        product = Product.query.get_or_404(id)
 
         if form.validate_on_submit():
 
@@ -77,7 +77,7 @@ def update(id):
 @products.route('/delete/<id>')
 def delete_listing(id):
     if session['admin_level'] > 0:
-        product = Products.query.get(id)
+        product = Product.query.get(id)
 
         target = os.path.join(Config.APP_ROOT, 'static/images/products/' + id)
 
@@ -108,7 +108,7 @@ def get_image(id, filename):
 
 @products.route('/product/<id>', methods=['GET'])
 def get_product(id):
-    product = Products.query.get_or_404(id)
+    product = Product.query.get_or_404(id)
     product.images = get_images(product.id)
 
     return render_template("listing.html", product=product)
