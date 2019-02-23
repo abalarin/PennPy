@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template
-from PennPy.endpoints.products.routes import get_products
+from PennPy.endpoints.products.utils import get_products
 
-from PennPy.config import Config
 
 main = Blueprint('main', __name__)
 

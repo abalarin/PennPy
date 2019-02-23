@@ -1,13 +1,14 @@
-from flask import Blueprint, Flask, render_template, flash, request, redirect, url_for, session, logging, send_from_directory
+from flask import Blueprint, render_template, flash, request, redirect, url_for, session
 from passlib.hash import sha256_crypt
-import uuid
 
 # Homebuilt imports
 from PennPy import db
 from PennPy.models import Users
-from PennPy.endpoints.products.routes import get_products
+from PennPy.endpoints.products.utils import get_products
+from PennPy.endpoints.users.utils import user_exsists
+
 from PennPy.endpoints.products.forms import CreateListingForm
-from PennPy.endpoints.users.forms import RegistrationForm, LoginForm
+from PennPy.endpoints.users.forms import RegistrationForm
 
 users = Blueprint('users', __name__)
 
@@ -52,7 +53,7 @@ def login():
     result = Users.query.filter_by(username=username).first()
 
     # If a user exsists and passwords match - login
-    if result != None and sha256_crypt.verify(password_candidate, result.password):
+    if result is not None and sha256_crypt.verify(password_candidate, result.password):
 
         # Init session vars
         session['logged_in'] = True
@@ -96,15 +97,3 @@ def dashboard():
             return render_template("profile.html", user=user)
     else:
         return redirect(url_for('main.index'))
-
-
-# Check if username or email are already taken
-def user_exsists(username, email):
-    # Get all Users in SQL
-    users = Users.query.all()
-    for user in users:
-        if username == user.username or email == user.email:
-            return True
-
-    # No matching user
-    return False

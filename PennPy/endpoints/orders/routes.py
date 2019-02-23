@@ -1,15 +1,15 @@
-from flask import Blueprint, Flask, render_template, flash, request, redirect, url_for, logging, send_from_directory, session
+from flask import Blueprint, render_template, redirect, url_for, session
 
 # Homebuilt imports
-from PennPy import db
-from PennPy.models import Product, Users
+from PennPy.models import Products, Users
 
 orders = Blueprint('orders', __name__)
+
 
 @orders.route('/purchase/<id>')
 def purchase(id):
     if 'username' in session:
-        product = Product.query.get_or_404(id)
+        product = Products.query.get_or_404(id)
         user = Users.query.filter_by(username=session['username']).first()
         print(user)
         return render_template('checkout.html', product=product, user=user)
