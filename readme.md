@@ -49,12 +49,12 @@ $ mysql -u root -p
 # pass prompt
 
 #  -- MYSQL
-mysql> CREATE TABLE users(id INT(11) AUTO_INCREMENT PRIMARY KEY, name varchar(100), email varchar(100), username varchar(30), password varchar(100), admin_level int(11), register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
-mysql> CREATE TABLE products(id varchar(255) PRIMARY KEY, name varchar(100), category varchar(100), price int(11), description varchar(255));
+mysql> CREATE TABLE user(id INT(11) AUTO_INCREMENT PRIMARY KEY, name varchar(100), email varchar(100), username varchar(30), password varchar(100), admin_level int(11), register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+mysql> CREATE TABLE product(id varchar(255) PRIMARY KEY, name varchar(100), category varchar(100), price int(11), description varchar(255));
 
 #  -- POSTGRESQL
-PennPy=# CREATE TABLE users(id SERIAL PRIMARY KEY, name varchar(100), email varchar(100), username varchar(30), password varchar(100), admin_level int, register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
-PennPy=# CREATE TABLE products(id varchar(255) PRIMARY KEY, name varchar(100), category varchar(100), price int, description varchar(255));
+PennPy=# CREATE TABLE user(id SERIAL PRIMARY KEY, name varchar(100), email varchar(100), username varchar(30), password varchar(100), admin_level int, register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+PennPy=# CREATE TABLE product(id varchar(255) PRIMARY KEY, name varchar(100), category varchar(100), price int, description varchar(255));
 
 ```
 ## [Pip](https://pip.pypa.io/en/stable/installing/) Setup
