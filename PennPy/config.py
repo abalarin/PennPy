@@ -5,7 +5,7 @@ class Config:
 
     DB_USER = os.environ.get('DB_USER')
     DB_PASS = os.environ.get('DB_PASS')
-    SECRET_KEY = "developmenttest"  # os.urandom(12)
+    SECRET_KEY = os.urandom(12)
 
     # MYSQL init
     SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://' + DB_USER + ':' + DB_PASS + '@localhost:3306/PennPy'
