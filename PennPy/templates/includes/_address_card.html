@@ -1,0 +1,49 @@
+<style media="screen">
+  /* Styles for add address */
+  #image_address_container img:hover {
+    opacity: 0.8;
+  }
+
+  #image_address_container img {
+    cursor: pointer;
+    max-width: 200px;
+  }
+
+  #image_address_container {
+    text-align: center;
+    width: 18rem;
+    margin: 10px;
+  }
+
+  #address_container {
+    width: 18rem;
+    margin: 10px;
+  }
+
+  /* Styles for add address */
+</style>
+
+<div class="row">
+  <div id="image_address_container">
+    <a href="/add_address">
+      <img src="/static/images/add_address.png">
+    </a>
+
+  </div>
+
+  {% for address in addresses %}
+  <div class="card" id="address_container">
+    <div class="card-body">
+      <h5 class="card-title">{{address.name}}</h5>
+      <h6 class="card-subtitle mb-2">{{address.address1}}</h6>
+      <h6 class="card-subtitle mb-2">{{address.address2}}</h6>
+      <h6 class="card-subtitle mb-2">{{address.city}}, {{address.state}}, {{address.zipcode}}</h6>
+      <h6 class="card-subtitle mb-2">{{address.country}}</h6>
+
+      <a href="#" class="card-link">Edit</a>
+      <a href="#" class="card-link">Delete</a>
+    </div>
+  </div>
+  {% endfor %}
+
+</div>
