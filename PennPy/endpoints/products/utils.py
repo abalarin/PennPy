@@ -8,7 +8,7 @@ from PennPy.config import Config
 def upload_images(images, product_id):
 
     # Create a target path using product ID
-    target = os.path.join(Config.APP_ROOT, 'static/images/' + product_id)
+    target = os.path.join(Config.APP_ROOT, 'static/images/products/' + product_id)
 
     # If target director exsist then this is just an update, no need to create new dir
     if not os.path.isdir(target):
@@ -23,7 +23,7 @@ def upload_images(images, product_id):
 
 def get_images(id):
     # Create a path with the ID & the root of our App
-    target = os.path.join(Config.APP_ROOT, 'static/images/' + id)
+    target = os.path.join(Config.APP_ROOT, 'static/images/products/' + id)
 
     # If path exsists we have images! Return them all
     if os.path.isdir(target):

@@ -2,9 +2,6 @@
 setup.cfg
 venv/
 
-PennPy/config.py
-
-PennPy/static/images/*
 PennPy.egg-info
 
 # Ignore cached data

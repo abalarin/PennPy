@@ -79,7 +79,7 @@ def delete_listing(id):
     if session['admin_level'] > 0:
         product = Products.query.get(id)
 
-        target = os.path.join(Config.APP_ROOT, 'static/images/' + id)
+        target = os.path.join(Config.APP_ROOT, 'static/images/products/' + id)
 
         if os.path.isdir(target):
             shutil.rmtree(target, ignore_errors=True)
@@ -95,7 +95,7 @@ def delete_listing(id):
 def delete_image(id, filename):
     if session['admin_level'] > 0:
         target = os.path.join(
-            Config.APP_ROOT, 'static/images/' + id + "/" + filename)
+            Config.APP_ROOT, 'static/images/products/' + id + "/" + filename)
         os.remove(target)
 
         return redirect(url_for("products.update", id=id))
@@ -103,7 +103,7 @@ def delete_image(id, filename):
 
 @products.route('/images/<id>/<filename>')
 def get_image(id, filename):
-    return send_from_directory('static/images', id + '/' + filename)
+    return send_from_directory('static/images/products/', id + '/' + filename)
 
 
 @products.route('/product/<id>', methods=['GET'])
