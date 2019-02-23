@@ -1,4 +1,4 @@
-PennPy/static/images
+PennPy/static/images/*
 PennPy.egg-info
 
 # Ignore cached data

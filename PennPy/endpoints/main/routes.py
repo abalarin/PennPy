@@ -1,6 +1,9 @@
 from flask import Blueprint, render_template
 from PennPy.endpoints.products.routes import get_products
 
+from PennPy.config import Config
+import os
+
 main = Blueprint('main', __name__)
 
 @main.route('/')
