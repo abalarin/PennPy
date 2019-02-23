@@ -47,7 +47,7 @@ def get_products():
 # Validate the unique ID of our new product to prevent collisions
 def id_validator(uid):
     # Query for any product where id matches uid
-    result = Products.query.filter_by(id=uid).first()
+    result = Products.query.filter_by(id=str(uid)).first()
 
     # If the ID exsists try again with new ID
     if result is not None:

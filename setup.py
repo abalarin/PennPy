@@ -12,5 +12,6 @@ setup(
         'flask_sqlalchemy',
         'flask-WTF',
         'passlib',
+        'psycopg2',
     ],
 )

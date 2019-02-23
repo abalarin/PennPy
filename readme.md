@@ -2,7 +2,7 @@
 The goal is to make a eCommerce site out of Python and Flask
 
 ```
-Admin Login: 
+Admin Login:
 username: jdoe
 password: rowan
 ```
@@ -22,7 +22,7 @@ Py/
   Py/PennPy/templates/		UI - HTML
    Py/PennPy/templates/includes/	HTML Components
   Py/PennPy/__init__.py			App Entry Point
-  Py/PennPy/config.py				App dependecies 
+  Py/PennPy/config.py				App dependecies
  Py/venv/					Virtual Envi
  Py/setup.py	 			framework inits
  Py/readme.md
@@ -38,7 +38,7 @@ On installation when you init a databade you should be asked to enter a password
 $ mysql --version
 mysql  Ver 8.0.13 for osx10.14 on x86_64 (Homebrew)
 
-# If that breaks, you might need to add mysql to your paths... 
+# If that breaks, you might need to add mysql to your paths...
 # mine lives here: /usr/local/mysql/bin/
 $ export PATH=${PATH}:/path/to/mysql/bin
 ```
@@ -49,7 +49,7 @@ $ mysql -u root -p
 # pass prompt
 
 mysql> CREATE TABLE users(id INT(11) AUTO_INCREMENT PRIMARY KEY, name varchar(100), email varchar(100), username varchar(30), password varchar(100), admin_level int(11), register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
-mysql> CREATE TABLE product(id varchar(255) PRIMARY KEY, name varchar(100), category varchar(100), price int(11), description varchar(255)); 
+mysql> CREATE TABLE product(id varchar(255) PRIMARY KEY, name varchar(100), category varchar(100), price int(11), description varchar(255));
 ```
 ## [Pip](https://pip.pypa.io/en/stable/installing/) Setup
 **pip** is a package management system used to install and manage software packages written in Python. You should already have **Python** installed, which should come with pip, if not:
@@ -122,7 +122,7 @@ $ flask run
 ```
 
 ## Deployment onto Ubuntu Instance
-#####Things needed on said instance
+##### Things needed on said instance
 - Gunicorn
 - nginx
 - python

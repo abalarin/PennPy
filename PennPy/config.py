@@ -8,7 +8,8 @@ class Config:
     SECRET_KEY = os.urandom(12)
 
     # MYSQL init
-    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://' + DB_USER + ':' + DB_PASS + '@localhost:3306/PennPy'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://' + DB_USER + \
+        ':' + DB_PASS + '@45.33.79.194:5432/PennPy'
 
     # To suppress FSADeprecationWarning
     SQLALCHEMY_TRACK_MODIFICATIONS = False
