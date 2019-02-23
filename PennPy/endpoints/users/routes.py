@@ -3,7 +3,7 @@ from passlib.hash import sha256_crypt
 
 # Homebuilt imports
 from PennPy import db
-from PennPy.models import Users
+from PennPy.models import User
 from PennPy.endpoints.products.utils import get_products
 from PennPy.endpoints.users.utils import user_exsists
 
@@ -21,8 +21,11 @@ def register():
     if form.validate_on_submit():
         # Create user object to insert into SQL
         hashed_pass = sha256_crypt.encrypt(str(form.password.data))
-        new_user = Users(name=form.name.data, username=form.username.data,
-                         email=form.email.data, password=hashed_pass)
+        new_user = User(
+            name=form.name.data,
+            username=form.username.data,
+            email=form.email.data,
+            password=hashed_pass)
 
         if user_exsists(new_user.username, new_user.email):
             flash('User already exsists!', 'danger')
@@ -50,7 +53,7 @@ def login():
     password_candidate = request.form.get('password')
 
     # Query for a user with the provided username
-    result = Users.query.filter_by(username=username).first()
+    result = User.query.filter_by(username=username).first()
 
     # If a user exsists and passwords match - login
     if result is not None and sha256_crypt.verify(password_candidate, result.password):
@@ -78,7 +81,7 @@ def logout():
 @users.route('/profile')
 def profile():
     if 'username' in session:
-        user = Users.query.filter_by(username=session['username']).first()
+        user = User.query.filter_by(username=session['username']).first()
         return render_template("profile.html", user=user)
     else:
         return redirect(url_for('main.index'))
@@ -90,7 +93,7 @@ def dashboard():
     if 'username' in session:
 
         # Pull all users data based off of their username stored in current session
-        user = Users.query.filter_by(username=session['username']).first()
+        user = User.query.filter_by(username=session['username']).first()
         if user.admin_level > 0:
             return render_template("dashboard.html", products=get_products(), form=CreateListingForm())
         else:

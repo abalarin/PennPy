@@ -1,10 +1,10 @@
-from PennPy.models import Users
+from PennPy.models import User
 
 
 # Check if username or email are already taken
 def user_exsists(username, email):
     # Get all Users in SQL
-    users = Users.query.all()
+    users = User.query.all()
     for user in users:
         if username == user.username or email == user.email:
             return True
