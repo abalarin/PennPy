@@ -1,3 +1,7 @@
+# Atom package manager
+setup.cfg
+PennPy/config.py
+
 PennPy/static/images/*
 PennPy.egg-info
 
