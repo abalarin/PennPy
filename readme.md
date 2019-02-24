@@ -55,7 +55,8 @@ mysql> CREATE TABLE product(id varchar(255) PRIMARY KEY, name varchar(100), cate
 #  -- POSTGRESQL
 PennPy=# CREATE TABLE user(id SERIAL PRIMARY KEY, name varchar(100), email varchar(100), username varchar(30), password varchar(100), admin_level int, register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
 PennPy=# CREATE TABLE product(id varchar(255) PRIMARY KEY, name varchar(100), category varchar(100), price int, description varchar(255));
-PennPy=# CREATE TABLE address(id serial primary key, address1 varchar(255), address2 varchar(255), country varchar(100), state varchar(20), zipcode int, user_id int);
+PennPy=# CREATE TABLE address(id serial primary key, name varchar(120), address1 varchar(255), address2 varchar(255), country varchar(100), city varchar(50), state varchar(20), zipcode varchar(10), user_id int);
+
 ```
 ## [Pip](https://pip.pypa.io/en/stable/installing/) Setup
 **pip** is a package management system used to install and manage software packages written in Python. You should already have **Python** installed, which should come with pip, if not:
