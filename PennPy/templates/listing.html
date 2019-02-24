@@ -3,7 +3,7 @@
 
 {% block content %}
 <style media="screen">
-  .product_img {
+  .listing_img {
     height: 300px;
   }
   .body{
@@ -19,15 +19,15 @@
 
       <div id="listingIndicators" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
-          {% for image in product.images %}
+          {% for image in listing.images %}
           <li data-target="#listingIndicators" data-slide-to="{{loop.index-1}}" class="item{% if loop.index == 1 %} active{% endif %}"></li>
           {% endfor %}
         </ol>
         <div class="carousel-inner">
 
-          {% for image in product.images %}
-          <div class="carousel-item product_img item{% if loop.index == 1 %} active{% endif %}">
-            <img class="d-block w-100" src="{{url_for('listings.get_image', id=product.id, filename=image)}}" alt="First slide">
+          {% for image in listing.images %}
+          <div class="carousel-item listing_img item{% if loop.index == 1 %} active{% endif %}">
+            <img class="d-block w-100" src="{{url_for('listings.get_image', id=listing.id, filename=image)}}" alt="First slide">
           </div>
           {% endfor %}
 
@@ -44,11 +44,11 @@
     </div>
 
     <div class="col-4">
-      <h2>{{product.name}} - <em>{{product.category}}</em> </h2>
-      <h3>${{product.price}}</h3>
+      <h2>{{listing.name}} - <em>{{listing.category}}</em> </h2>
+      <h3>${{listing.price}}</h3>
       <h4>Description</h4>
-      <p>{{product.description}}</p>
-      <a class="purchase" href="{{url_for('orders.purchase', id=product.id)}}">
+      <p>{{listing.description}}</p>
+      <a class="purchase" href="{{url_for('orders.purchase', id=listing.id)}}">
       <button type="button" class="btn btn-success btn-lg btn-block">Purchase</button>
       </a>
     </div>

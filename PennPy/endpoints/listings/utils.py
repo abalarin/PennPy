@@ -5,10 +5,10 @@ from PennPy.models import Listing
 from PennPy.config import Config
 
 
-def upload_images(images, product_id):
+def upload_images(images, listing_id):
 
-    # Create a target path using product ID
-    target = os.path.join(Config.APP_ROOT, 'static/images/products/' + product_id)
+    # Create a target path using listing ID
+    target = os.path.join(Config.APP_ROOT, 'static/images/listings/' + listing_id)
 
     # If target director exsist then this is just an update, no need to create new dir
     if not os.path.isdir(target):
@@ -23,7 +23,7 @@ def upload_images(images, product_id):
 
 def get_images(id):
     # Create a path with the ID & the root of our App
-    target = os.path.join(Config.APP_ROOT, 'static/images/products/' + id)
+    target = os.path.join(Config.APP_ROOT, 'static/images/listings/' + id)
 
     # If path exsists we have images! Return them all
     if os.path.isdir(target):
@@ -33,20 +33,20 @@ def get_images(id):
 
 
 def get_listings():
-    # Get all products in SQL
-    products = Listing.query.all()
+    # Get all listings in SQL
+    listings = Listing.query.all()
 
-    # Get images for each product
-    for product in products:
-        images = get_images(product.id)
-        product.images = images
+    # Get images for each listing
+    for listing in listings:
+        images = get_images(listing.id)
+        listing.images = images
 
-    return(products)
+    return(listings)
 
 
-# Validate the unique ID of our new product to prevent collisions
+# Validate the unique ID of our new listing to prevent collisions
 def id_validator(uid):
-    # Query for any product where id matches uid
+    # Query for any listing where id matches uid
     result = Listing.query.filter_by(id=str(uid)).first()
 
     # If the ID exsists try again with new ID

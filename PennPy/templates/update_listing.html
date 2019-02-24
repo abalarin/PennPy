@@ -3,7 +3,7 @@
 
 {% block content %}
 <style media="screen">
-  .product_img {
+  .listing_img {
     height: 300px;
   }
   .body{
@@ -81,7 +81,7 @@ a:hover {
 
 <div class="container-fluid body">
 
-  <form method="post" action="{{url_for('listings.update', id=product.id)}}" enctype="multipart/form-data">
+  <form method="post" action="{{url_for('listings.update', id=listing.id)}}" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
 
     <div class="row">
@@ -89,16 +89,16 @@ a:hover {
 
         <div id="listingIndicators" class="carousel slide" data-ride="carousel">
           <ol class="carousel-indicators">
-            {% for image in product.images %}
+            {% for image in listing.images %}
             <li data-target="#listingIndicators" data-slide-to="{{loop.index-1}}" class="item{% if loop.index == 1 %} active{% endif %}"></li>
             {% endfor %}
           </ol>
 
           <div class="carousel-inner">
 
-            {% for image in product.images %}
-            <div class="carousel-item product_img item{% if loop.index == 1 %} active{% endif %}">
-              <img class="d-block w-100" src="{{url_for('listings.get_image', id=product.id, filename=image)}}" alt="First slide">
+            {% for image in listing.images %}
+            <div class="carousel-item listing_img item{% if loop.index == 1 %} active{% endif %}">
+              <img class="d-block w-100" src="{{url_for('listings.get_image', id=listing.id, filename=image)}}" alt="First slide">
             </div>
             {% endfor %}
 
@@ -120,18 +120,18 @@ a:hover {
           <div class="form-group">
             <div class="form-row">
               <div class="col-md-6">
-                {{form.title(class="form-control-plaintext", value=product.name)}}
+                {{form.title(class="form-control-plaintext", value=listing.name)}}
               </div>
 
               <div class="col-md-4">
-                {{form.category(class="form-control", value=product.category)}}
+                {{form.category(class="form-control", value=listing.category)}}
               </div>
             </div>
           </div>
 
           <div class="form-check-inline price">
             <span class="currency">$</span>
-            {{form.price(class="form-control-plaintext", value=product.price)}}
+            {{form.price(class="form-control-plaintext", value=listing.price)}}
           </div>
 
           <div class="form-group">
@@ -140,7 +140,7 @@ a:hover {
           </div>
 
           {{form.update(class="btn btn-primary")}}
-          <a href="/delete/{{product.id}}">
+          <a href="/delete/{{listing.id}}">
             <button type="button" class="btn btn-danger">Delete</button>
           </a>
         </fieldset>
@@ -152,14 +152,14 @@ a:hover {
     <!-- Listing Images -Upload/Delete Images-->
     <div class="row">
 
-      {% for image in product.images %}
+      {% for image in listing.images %}
       <div id="container" class="column">
-        <img src="{{url_for('listings.get_image', id=product.id, filename=image)}}" style="width:100%">
+        <img src="{{url_for('listings.get_image', id=listing.id, filename=image)}}" style="width:100%">
 
         <div class="overlay">
           <div class="text">
             <h5>
-              <a class="delete" href="/delete/{{product.id}}/{{image}} ">&times;</a>
+              <a class="delete" href="/delete/{{listing.id}}/{{image}} ">&times;</a>
             </h5>
           </div>
         </div>
@@ -170,7 +170,7 @@ a:hover {
         <label for="image-upload">
           <img src="/static/images/upload.png">
         </label>
-        <input id="image-upload" type="file" accept="image/*" name="product_images" multiple>
+        <input id="image-upload" type="file" accept="image/*" name="listing_images" multiple>
 
       </div>
     </div>

@@ -5,7 +5,7 @@
 
   }
 
-  .product_img {
+  .listing_img {
     display: block;
     width: 100%;
     height: 300px;
@@ -59,24 +59,24 @@
 </style>
 
 <div class="row">
-  {% for product in products %}
-  <div class="col-sm-4" id="product_card">
+  {% for listing in listings %}
+  <div class="col-sm-4" id="listing_card">
     <div id="container">
 
-      <img class="product_img" src="{{url_for('listings.get_image', id=product.id, filename=product.images[0])}}" onerror="this.onerror=null;this.src='/static/images/noimage.png';">
+      <img class="listing_img" src="{{url_for('listings.get_image', id=listing.id, filename=listing.images[0])}}" onerror="this.onerror=null;this.src='/static/images/noimage.png';">
 
       <div class="overlay">
         <div class="text">
           <h5>
-            <a class="edit" href="/update/{{product.id}}">PUBLISH</a>
+            <a class="edit" href="/update/{{listing.id}}">PUBLISH</a>
 
-            <a class="edit" href="/update/{{product.id}}">EDIT</a>
+            <a class="edit" href="/update/{{listing.id}}">EDIT</a>
           </h5>
 
-          <h5 class="card-title">{{product.name}} - <em>{{product.category}}</em></h5>
-          <h6> ${{product.price}} </h6>
+          <h5 class="card-title">{{listing.name}} - <em>{{listing.category}}</em></h5>
+          <h6> ${{listing.price}} </h6>
           <h5>
-            <a class="delete" href="/delete/{{product.id}}">&times;</a>
+            <a class="delete" href="/delete/{{listing.id}}">&times;</a>
           </h5>
         </div>
       </div>

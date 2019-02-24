@@ -20,22 +20,22 @@ def upload():
     form = CreateListingForm()
 
     if form.validate_on_submit():
-        # Make a unique product ID
-        product_id = str(id_validator(uuid.uuid4()))
+        # Make a unique listing ID
+        listing_id = str(id_validator(uuid.uuid4()))
 
         # Create Listing object to insert into SQL
-        new_product = Listing(
-            id=product_id,
+        new_listing = Listing(
+            id=listing_id,
             name=form.title.data,
             category=form.category.data,
             price=form.price.data,
             description=form.description.data)
 
         # Upload Images
-        upload_images(request.files.getlist("product_images"), product_id)
+        upload_images(request.files.getlist("listing_images"), listing_id)
 
         # Insert Listing into SQL db
-        db.session.add(new_product)
+        db.session.add(new_listing)
         db.session.commit()
 
         flash('Listing Created!', 'success')
@@ -50,26 +50,26 @@ def update(id):
     # First authenticate user is logged in and an ADMIN
     if 'username' in session and session['admin_level'] > 0:
         form = UpdateListingForm()
-        product = Listing.query.get_or_404(id)
+        listing = Listing.query.get_or_404(id)
 
         if form.validate_on_submit():
 
             # Get newly added images from req object and upload them to exsisting directory
-            upload_images(request.files.getlist("product_images"), product.id)
+            upload_images(request.files.getlist("listing_images"), listing.id)
 
             # Reassign values to update SQL entry
-            product.name = form.title.data
-            product.category = form.category.data
-            product.price = form.price.data
-            product.description = form.description.data
+            listing.name = form.title.data
+            listing.category = form.category.data
+            listing.price = form.price.data
+            listing.description = form.description.data
             db.session.commit()
 
-            return redirect(url_for('listings.get_listing', id=product.id))
+            return redirect(url_for('listings.get_listing', id=listing.id))
 
         elif request.method == 'GET':
-            product.images = get_images(product.id)
-            form.description.data = product.description
-            return render_template("update_listing.html", product=product, form=form)
+            listing.images = get_images(listing.id)
+            form.description.data = listing.description
+            return render_template("update_listing.html", listing=listing, form=form)
 
     return redirect(url_for('main.index'))
 
@@ -77,14 +77,14 @@ def update(id):
 @listings.route('/delete/<id>')
 def delete_listing(id):
     if session['admin_level'] > 0:
-        product = Listing.query.get(id)
+        listing = Listing.query.get(id)
 
-        target = os.path.join(Config.APP_ROOT, 'static/images/products/' + id)
+        target = os.path.join(Config.APP_ROOT, 'static/images/listings/' + id)
 
         if os.path.isdir(target):
             shutil.rmtree(target, ignore_errors=True)
 
-        db.session.delete(product)
+        db.session.delete(listing)
         db.session.commit()
 
         flash('Your listing has been deleted!', 'success')
@@ -95,7 +95,7 @@ def delete_listing(id):
 def delete_image(id, filename):
     if session['admin_level'] > 0:
         target = os.path.join(
-            Config.APP_ROOT, 'static/images/products/' + id + "/" + filename)
+            Config.APP_ROOT, 'static/images/listings/' + id + "/" + filename)
         os.remove(target)
 
         return redirect(url_for("listings.update", id=id))
@@ -103,12 +103,12 @@ def delete_image(id, filename):
 
 @listings.route('/images/<id>/<filename>')
 def get_image(id, filename):
-    return send_from_directory('static/images/products/', id + '/' + filename)
+    return send_from_directory('static/images/listings/', id + '/' + filename)
 
 
-@listings.route('/product/<id>', methods=['GET'])
+@listings.route('/listing/<id>', methods=['GET'])
 def get_listing(id):
-    product = Listing.query.get_or_404(id)
-    product.images = get_images(product.id)
+    listing = Listing.query.get_or_404(id)
+    listing.images = get_images(listing.id)
 
-    return render_template("listing.html", product=product)
+    return render_template("listing.html", listing=listing)

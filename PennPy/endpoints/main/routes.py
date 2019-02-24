@@ -8,7 +8,7 @@ main = Blueprint('main', __name__)
 @main.route('/')
 @main.route('/*')
 def index():
-    return render_template("index.html", products=get_listings())
+    return render_template("index.html", listings=get_listings())
 
 
 @main.app_errorhandler(403)

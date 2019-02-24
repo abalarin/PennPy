@@ -98,7 +98,7 @@ def dashboard():
         # Pull all users data based off of their username stored in current session
         user = User.query.filter_by(username=session['username']).first()
         if user.admin_level > 0:
-            return render_template("dashboard.html", products=get_listings(), form=CreateListingForm())
+            return render_template("dashboard.html", listings=get_listings(), form=CreateListingForm())
         else:
             return redirect(url_for('users.account'))
     else:
