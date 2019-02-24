@@ -18,12 +18,12 @@ def create_app(config_class=Config):
     # Import and init Blueprints
     from PennPy.endpoints.main.routes import main
     from PennPy.endpoints.users.routes import users
-    from PennPy.endpoints.products.routes import products
+    from PennPy.endpoints.listings.routes import listings
     from PennPy.endpoints.orders.routes import orders
 
     app.register_blueprint(main)
     app.register_blueprint(users)
-    app.register_blueprint(products)
+    app.register_blueprint(listings)
     app.register_blueprint(orders)
 
     return app

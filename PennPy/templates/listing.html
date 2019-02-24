@@ -27,7 +27,7 @@
 
           {% for image in product.images %}
           <div class="carousel-item product_img item{% if loop.index == 1 %} active{% endif %}">
-            <img class="d-block w-100" src="{{url_for('products.get_image', id=product.id, filename=image)}}" alt="First slide">
+            <img class="d-block w-100" src="{{url_for('listings.get_image', id=product.id, filename=image)}}" alt="First slide">
           </div>
           {% endfor %}
 

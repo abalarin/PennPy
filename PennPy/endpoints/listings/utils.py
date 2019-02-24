@@ -1,7 +1,7 @@
 import os
 import uuid
 
-from PennPy.models import Product
+from PennPy.models import Listing
 from PennPy.config import Config
 
 
@@ -32,9 +32,9 @@ def get_images(id):
     return False
 
 
-def get_products():
+def get_listings():
     # Get all products in SQL
-    products = Product.query.all()
+    products = Listing.query.all()
 
     # Get images for each product
     for product in products:
@@ -47,7 +47,7 @@ def get_products():
 # Validate the unique ID of our new product to prevent collisions
 def id_validator(uid):
     # Query for any product where id matches uid
-    result = Product.query.filter_by(id=str(uid)).first()
+    result = Listing.query.filter_by(id=str(uid)).first()
 
     # If the ID exsists try again with new ID
     if result is not None:

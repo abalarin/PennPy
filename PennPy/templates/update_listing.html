@@ -16,7 +16,7 @@
 /* The grid: Four equal columns that floats next to each other */
 .column {
   position: relative;
-  width: 25%;
+  width: 20%;
   padding: 10px;
 }
 
@@ -81,7 +81,7 @@ a:hover {
 
 <div class="container-fluid body">
 
-  <form method="post" action="{{url_for('products.update', id=product.id)}}" enctype="multipart/form-data">
+  <form method="post" action="{{url_for('listings.update', id=product.id)}}" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
 
     <div class="row">
@@ -98,7 +98,7 @@ a:hover {
 
             {% for image in product.images %}
             <div class="carousel-item product_img item{% if loop.index == 1 %} active{% endif %}">
-              <img class="d-block w-100" src="{{url_for('products.get_image', id=product.id, filename=image)}}" alt="First slide">
+              <img class="d-block w-100" src="{{url_for('listings.get_image', id=product.id, filename=image)}}" alt="First slide">
             </div>
             {% endfor %}
 
@@ -149,12 +149,12 @@ a:hover {
 
 
 
-    <!-- Product Images -Upload/Delete Images-->
+    <!-- Listing Images -Upload/Delete Images-->
     <div class="row">
 
       {% for image in product.images %}
       <div id="container" class="column">
-        <img src="{{url_for('products.get_image', id=product.id, filename=image)}}" style="width:100%">
+        <img src="{{url_for('listings.get_image', id=product.id, filename=image)}}" style="width:100%">
 
         <div class="overlay">
           <div class="text">
@@ -174,7 +174,7 @@ a:hover {
 
       </div>
     </div>
-    <!-- Product Images -->
+    <!-- Listing Images -->
 
   </form>
 

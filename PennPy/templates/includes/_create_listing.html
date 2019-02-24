@@ -10,7 +10,7 @@
 <div>{{ message }}</div>
 {% endfor %}
 
-<form method="post" action="{{url_for('products.upload')}}" enctype="multipart/form-data">
+<form method="post" action="{{url_for('listings.upload')}}" enctype="multipart/form-data">
   {{ form.hidden_tag() }}
   <fieldset>
     <legend> Create Listing</legend>
@@ -38,7 +38,7 @@
     </div>
 
     <div class="form-group">
-      <label>Product Pictures</label>
+      <label>Listing Pictures</label>
       <div class="custom-file">
         <input type="file" class="custom-file-input" name="product_images" accept="image/*" multiple>
         <label class="custom-file-label" for="customFile">Choose Pictures</label>

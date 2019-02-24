@@ -46,7 +46,7 @@
   <div class="col-sm-4" id="product_card">
     <div id="container">
 
-      <img class="product_img" src="{{url_for('products.get_image', id=product.id, filename=product.images[0])}}" onerror="this.onerror=null;this.src='/static/images/noimage.png';">
+      <img class="product_img" src="{{url_for('listings.get_image', id=product.id, filename=product.images[0])}}" onerror="this.onerror=null;this.src='/static/images/noimage.png';">
 
       <a href="/product/{{product.id}}">
         <div class="overlay">

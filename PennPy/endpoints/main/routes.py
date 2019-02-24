@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template
-from PennPy.endpoints.products.utils import get_products
+from PennPy.endpoints.listings.utils import get_listings
 
 
 main = Blueprint('main', __name__)
@@ -8,7 +8,7 @@ main = Blueprint('main', __name__)
 @main.route('/')
 @main.route('/*')
 def index():
-    return render_template("index.html", products=get_products())
+    return render_template("index.html", products=get_listings())
 
 
 @main.app_errorhandler(403)

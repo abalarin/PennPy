@@ -4,17 +4,17 @@ from wtforms.validators import DataRequired
 
 
 class CreateListingForm(FlaskForm):
-    title = TextField('Product Name', validators=[DataRequired()])
-    category = SelectField('Product Category', choices=[
+    title = TextField('Listing Name', validators=[DataRequired()])
+    category = SelectField('Listing Category', choices=[
                            ('Pillow', 'Pillow'), ('Blanket', 'Blanket')])
     price = IntegerField('Price', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
-    submit = SubmitField("Create Product")
+    submit = SubmitField("Create Listing")
 
 
 class UpdateListingForm(FlaskForm):
-    title = TextField('Product Name', validators=[DataRequired()])
-    category = SelectField('Product Category', choices=[
+    title = TextField('Listing Name', validators=[DataRequired()])
+    category = SelectField('Listing Category', choices=[
                            ('Pillow', 'Pillow'), ('Blanket', 'Blanket')])
     price = IntegerField('Price', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
