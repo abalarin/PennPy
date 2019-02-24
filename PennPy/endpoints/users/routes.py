@@ -3,12 +3,12 @@ from passlib.hash import sha256_crypt
 
 # Homebuilt imports
 from PennPy import db
-from PennPy.models import User
+from PennPy.models import User, Address
 from PennPy.endpoints.products.utils import get_products
-from PennPy.endpoints.users.utils import user_exsists
+from PennPy.endpoints.users.utils import user_exsists, get_addresses
 
 from PennPy.endpoints.products.forms import CreateListingForm
-from PennPy.endpoints.users.forms import RegistrationForm
+from PennPy.endpoints.users.forms import RegistrationForm, AddressForm
 
 users = Blueprint('users', __name__)
 
@@ -62,6 +62,9 @@ def login():
         session['logged_in'] = True
         session['username'] = username
         session['admin_level'] = result.admin_level
+        session['user_id'] = result.id
+        print(result)
+        print(session['user_id'])
 
         flash('Successful Login!', 'success')
         return redirect(url_for('users.dashboard'))
@@ -82,7 +85,7 @@ def logout():
 def profile():
     if 'username' in session:
         user = User.query.filter_by(username=session['username']).first()
-        return render_template("profile.html", user=user)
+        return render_template("profile.html", user=user, addresses=get_addresses(user.id))
     else:
         return redirect(url_for('main.index'))
 
@@ -100,3 +103,32 @@ def dashboard():
             return render_template("profile.html", user=user)
     else:
         return redirect(url_for('main.index'))
+
+
+@users.route('/add_address', methods=['POST', 'GET'])
+def add_address():
+
+    form = AddressForm()
+
+    # If a session exsists redirect based on admin_level
+    if 'username' not in session:
+        return redirect(url_for('users.register'))
+
+    # Uses WTF to check if POST req and form is valid
+    if form.validate_on_submit():
+        new_address = Address(
+            name=form.name.data,
+            address1=form.address1.data,
+            address2=form.address2.data,
+            country=form.country.data,
+            state=form.state.data,
+            city=form.city.data,
+            zipcode=form.zipcode.data,
+            user_id=session['user_id'])
+
+        # Insert new user into SQL
+        db.session.add(new_address)
+        db.session.commit()
+        return redirect(url_for('users.profile'))
+
+    return render_template('add_address.html', form=form)

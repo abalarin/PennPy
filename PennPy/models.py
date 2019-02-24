@@ -14,7 +14,7 @@ class User(db.Model):
     register_date = db.Column(db.DateTime(
         timezone=True), server_default=func.now())
     admin_level = db.Column(db.Integer, default=0)
-    addresses = db.relationship('Address', backref='user')
+    addresses = db.relationship('Address', backref='user', lazy=True)
 
     def __repr__(self):
         return(self.username + ", " + self.email)
@@ -32,14 +32,15 @@ class Product(db.Model):
 
 
 class Address(db.Model):
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), nullable=False)
     address1 = db.Column(db.String(255), nullable=False)
     address2 = db.Column(db.String(255))
-    country = db.Column(db.String(255))
-    state = db.Column(db.String(255))
-    zipcode = db.Column(db.String(255))
-
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    country = db.Column(db.String(100))
+    state = db.Column(db.String(20))
+    city = db.Column(db.String(20))
+    zipcode = db.Column(db.String(10))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, primary_key=True)
 
     def __repr__(self):
-        return(self.address1)
+        return(self.address1 + ", " + self.country + ", " + self.state + ", " + str(self.zipcode) + ", " + str(self.user_id))

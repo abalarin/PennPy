@@ -1,4 +1,4 @@
-from PennPy.models import User
+from PennPy.models import User, Address
 
 
 # Check if username or email are already taken
@@ -11,3 +11,7 @@ def user_exsists(username, email):
 
     # No matching user
     return False
+
+
+def get_addresses(user_id):
+    return(Address.query.filter_by(user_id=user_id))
