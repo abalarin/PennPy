@@ -38,10 +38,10 @@
       <h6 class="card-subtitle mb-2">{{address.address1}}</h6>
       <h6 class="card-subtitle mb-2">{{address.address2}}</h6>
       <h6 class="card-subtitle mb-2">{{address.city}}, {{address.state}}, {{address.zipcode}}</h6>
-      <h6 class="card-subtitle mb-2">{{address.country}}</h6>
+      <h6 class="card-subtitle mb-2">United States</h6>
 
-      <a href="#" class="card-link">Edit</a>
-      <a href="#" class="card-link">Delete</a>
+      <a href="/update_address/{{address.id}}" class="card-link">Edit</a>
+      <a href="/delete_address/{{address.id}}" class="card-link">Delete</a>
     </div>
   </div>
   {% endfor %}

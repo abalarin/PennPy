@@ -81,11 +81,11 @@ def logout():
     return redirect(url_for('main.index'))
 
 
-@users.route('/profile')
-def profile():
+@users.route('/account')
+def account():
     if 'username' in session:
         user = User.query.filter_by(username=session['username']).first()
-        return render_template("profile.html", user=user, addresses=get_addresses(user.id))
+        return render_template("account.html", user=user, addresses=get_addresses(user.id))
     else:
         return redirect(url_for('main.index'))
 
@@ -100,7 +100,7 @@ def dashboard():
         if user.admin_level > 0:
             return render_template("dashboard.html", products=get_products(), form=CreateListingForm())
         else:
-            return render_template("profile.html", user=user)
+            return redirect(url_for('users.account'))
     else:
         return redirect(url_for('main.index'))
 
@@ -129,6 +129,45 @@ def add_address():
         # Insert new user into SQL
         db.session.add(new_address)
         db.session.commit()
-        return redirect(url_for('users.profile'))
+        return redirect(url_for('users.account'))
 
     return render_template('add_address.html', form=form)
+
+
+@users.route('/update_address/<id>', methods=['GET', 'POST'])
+def update_address(id):
+
+    # If a session exsists
+    if 'username' in session:
+        form = AddressForm()
+        address = Address.query.get(id)
+
+        # Uses WTF to check if POST req and form is valid
+        if form.validate_on_submit():
+
+            address.name = form.name.data
+            address.address1 = form.address1.data
+            address.address2 = form.address2.data
+            address.country = form.country.data
+            address.state = form.state.data
+            address.city = form.city.data
+            address.zipcode = form.zipcode.data
+
+            db.session.commit()
+            return redirect(url_for('users.account'))
+
+        else:
+            return render_template('update_address.html', form=form, address=address)
+
+
+# ADD MORE VALIDATION
+@users.route('/delete_address/<id>')
+def delete_address(id):
+    if 'username' in session:
+        address = Address.query.get(id)
+        db.session.delete(address)
+        db.session.commit()
+        flash('Address Deleted', 'success')
+        return redirect(url_for('users.account'))
+
+    return redirect(url_for('users.register'))

@@ -25,9 +25,9 @@
         {% if session.logged_in %}
           {% if session.admin_level > 0%}
             <li><a class="nav-link" href="/dashboard">Dashboard</a></li>
-          {% else %}
-            <li><a class="nav-link" href="/profile">Profile</a></li>
           {% endif %}
+          
+          <li><a class="nav-link" href="/account">Account</a></li>
 
           <li><a class="nav-link" href="/logout">Logout</a></li>
         {% else %}
