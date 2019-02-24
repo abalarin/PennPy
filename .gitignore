@@ -4,6 +4,8 @@ venv/
 
 PennPy.egg-info
 
+PennPy/config.py
+
 PennPy/static/images/products
 
 # Ignore cached data

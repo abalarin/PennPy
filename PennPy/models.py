@@ -40,7 +40,7 @@ class Address(db.Model):
     state = db.Column(db.String(20))
     city = db.Column(db.String(20))
     zipcode = db.Column(db.String(10))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
         return(self.address1 + ", " + self.country + ", " + self.state + ", " + str(self.zipcode) + ", " + str(self.user_id))
