@@ -39,23 +39,6 @@
     transform: translate(-50%, -50%);
     text-align: center;
   }
-
-  .edit {
-    color: white;
-  }
-
-  .delete {
-    color: red;
-    font-size: 30px;
-  }
-
-  a:link {
-    text-decoration: none;
-  }
-
-  a:hover {
-    color: grey;
-  }
 </style>
 
 <div class="row">
@@ -65,21 +48,16 @@
 
       <img class="listing_img" src="{{url_for('listings.get_image', id=listing.id, filename=listing.images[0])}}" onerror="this.onerror=null;this.src='/static/images/noimage.png';">
 
-      <div class="overlay">
-        <div class="text">
-          <h5>
-            <a class="edit" href="/update/{{listing.id}}">PUBLISH</a>
-
-            <a class="edit" href="/update/{{listing.id}}">EDIT</a>
-          </h5>
-
-          <h5 class="card-title">{{listing.name}} - <em>{{listing.category}}</em></h5>
-          <h6> ${{listing.price}} </h6>
-          <h5>
-            <a class="delete" href="/delete/{{listing.id}}">&times;</a>
-          </h5>
+      <a href="/listing/{{listing.id}}">
+        <div class="overlay">
+          <div class="text" href="/listing/{{listing.id}}">
+            <h5 class="card-title">{{listing.name}} - <em>{{listing.category}}</em></h5>
+            <h6> ${{listing.price}} </h6>
+            <p class="card-text">{{listing.description}}</p>
+          </div>
         </div>
-      </div>
+      </a>
+
     </div>
   </div>
   {% endfor %}

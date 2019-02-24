@@ -6,13 +6,13 @@ PennPy.egg-info
 
 PennPy/config.py
 
-PennPy/static/images/products
+PennPy/static/images/listings
 
 # Ignore cached data
 PennPy/__init__.pyc
 PennPy/__pycache__
 PennPy/endpoints/__pycache__
 PennPy/endpoints/main/__pycache__
-PennPy/endpoints/products/__pycache__
+PennPy/endpoints/listings/__pycache__
 PennPy/endpoints/users/__pycache__
 PennPy/endpoints/orders/__pycache__

@@ -20,7 +20,7 @@ class User(db.Model):
         return(self.username + ", " + self.email)
 
 
-class Product(db.Model):
+class Listing(db.Model):
     id = db.Column(db.String(255), unique=True, primary_key=True)
     name = db.Column(db.String(100))
     category = db.Column(db.String(100))

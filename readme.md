@@ -50,11 +50,11 @@ $ mysql -u root -p
 
 #  -- MYSQL
 mysql> CREATE TABLE user(id INT(11) AUTO_INCREMENT PRIMARY KEY, name varchar(100), email varchar(100), username varchar(30), password varchar(100), admin_level int(11), register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
-mysql> CREATE TABLE product(id varchar(255) PRIMARY KEY, name varchar(100), category varchar(100), price int(11), description varchar(255));
+mysql> CREATE TABLE listing(id varchar(255) PRIMARY KEY, name varchar(100), category varchar(100), price int(11), description varchar(255));
 
 #  -- POSTGRESQL
 PennPy=# CREATE TABLE user(id SERIAL PRIMARY KEY, name varchar(100), email varchar(100), username varchar(30), password varchar(100), admin_level int, register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
-PennPy=# CREATE TABLE product(id varchar(255) PRIMARY KEY, name varchar(100), category varchar(100), price int, description varchar(255));
+PennPy=# CREATE TABLE listing(id varchar(255) PRIMARY KEY, name varchar(100), category varchar(100), price int, description varchar(255));
 PennPy=# CREATE TABLE address(id serial primary key, name varchar(120), address1 varchar(255), address2 varchar(255), country varchar(100), city varchar(50), state varchar(20), zipcode varchar(10), user_id int);
 
 ```
@@ -104,9 +104,9 @@ $ pip install -e .
 # Launch app
 $ flask run
 
- * Environment: production
-   WARNING: Do not use the development server in a production environment.
-   Use a production WSGI server instead.
+ * Environment: listingion
+   WARNING: Do not use the development server in a listingion environment.
+   Use a listingion WSGI server instead.
  * Debug mode: off
  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
 ```
