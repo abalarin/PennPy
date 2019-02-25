@@ -29,8 +29,8 @@ def paypal_checkout(id):
         "payer": {
             "payment_method": "paypal"},
         "redirect_urls": {
-            "return_url": "http://127.0.0.1:5000/paypal_review",
-            "cancel_url": "http://127.0.0.1:5000/"},
+            "return_url": "http://pennpy.com/paypal_review",
+            "cancel_url": "http://pennpy.com/"},
         "transactions": [{
             "item_list": {
                 "items": [{
