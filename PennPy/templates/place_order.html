@@ -1,0 +1,86 @@
+{% extends 'layout.html' %}
+{% block title %} eComm{% endblock %}
+
+{% block content %}
+<style media="screen">
+  .checkout {
+    max-width: 960px;
+    margin-bottom: 100px;
+  }
+
+  .listing_img {
+    display: block;
+    height: 200px;
+    width: 100%;
+  }
+
+  #container:hover {
+    opacity: .95;
+  }
+</style>
+
+<div class="container checkout">
+
+  <div class="py-5 text-center">
+    <h1>Purchase</h1>
+  </div>
+
+  <div class="row">
+    <div class="row">
+      <div class="col-md">
+        <h3>Shipping Address</h3>
+
+      </div>
+
+      <div class="col" id="address_container">
+        <h5 class="card-title">{{address.recipient_name}}</h5>
+        <h6 class="card-subtitle mb-2">{{address.line1}}</h6>
+        <h6 class="card-subtitle mb-2">{{address.line2}}</h6>
+        <h6 class="card-subtitle mb-2">{{address.city}}, {{address.state}}, {{address.postal_code}}</h6>
+        <h6 class="card-subtitle mb-2">United States</h6>
+        <!--
+          <a href="/update_address/{{address.id}}" class="card-link">Edit</a>
+          <a href="/delete_address/{{address.id}}" class="card-link">Delete</a> -->
+      </div>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="col-md-4 order-md-2 mb-4 container-fluid">
+      <ul class="list-group mb-3">
+
+        {% for product in order.item_list.items %}
+        <li class="list-group-item d-flex justify-content-between lh-condensed">
+          <div>
+            <h6 class="my-0">{{product.name}}</h6>
+            <small class="text-muted">{{product.sku}}</small>
+          </div>
+          <span class="text-muted">${{product.price}}</span>
+        </li>
+        {% endfor %}
+
+        <li class="list-group-item d-flex justify-content-between lh-condensed">
+          <div>
+            <h6 class="my-0">Shipping</h6>
+            <small class="text-muted">To your location</small>
+          </div>
+          <span class="text-muted">{{order.amount.details.shipping}}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Total (USD)</span>
+          <strong>${{order.amount.total}}</strong>
+        </li>
+      </ul>
+
+      <div class=" p-2">
+        <a href="/paypal_pay?paymentId={{payment.id}}&PayerID={{payment.payer.payer_info.payer_id}}" class="btn btn-primary btn-lg btn-block">
+          Place Order
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock %}
