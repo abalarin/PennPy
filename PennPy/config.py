@@ -9,8 +9,7 @@ class Config:
     SECRET_KEY = os.urandom(12)
 
     # Connection to Postgres server
-    SQLALCHEMY_DATABASE_URI = 'postgresql://' + DB_USER + \
-        ':' + DB_PASS + '@45.33.79.194:5432/PennPy'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://' + DB_USER + ':' + DB_PASS + '@45.33.79.194:5432/PennPy'
 
     # Connection to local postgres db
     # SQLALCHEMY_DATABASE_URI = 'postgresql://abalarin:lindoe!@localhost:5432/PennPy'
