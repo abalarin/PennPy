@@ -13,5 +13,6 @@ setup(
         'flask-WTF',
         'passlib',
         'psycopg2',
+        'paypalrestsdk',
     ],
 )

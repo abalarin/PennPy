@@ -48,7 +48,6 @@ def register():
 
 @users.route('/login', methods=['POST'])
 def login():
-
     username = request.form.get('username')
     password_candidate = request.form.get('password')
 
@@ -63,8 +62,6 @@ def login():
         session['username'] = username
         session['admin_level'] = result.admin_level
         session['user_id'] = result.id
-        print(result)
-        print(session['user_id'])
 
         flash('Successful Login!', 'success')
         return redirect(url_for('users.dashboard'))

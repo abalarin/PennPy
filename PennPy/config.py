@@ -1,3 +1,4 @@
+import paypalrestsdk
 import os
 
 
@@ -18,3 +19,9 @@ class Config:
 
     # Gets pwd and declares it is the root dir for the App
     APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+    # PayPal sandbox config
+    paypalrestsdk.configure({
+        "mode": "sandbox",  # sandbox or live
+        "client_id": os.environ.get('PAYPAL_CLIENT_ID'),
+        "client_secret": os.environ.get('PAYPAL_CLIENT_SECRET')})

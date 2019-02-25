@@ -48,7 +48,7 @@
       <h3>${{listing.price}}</h3>
       <h4>Description</h4>
       <p>{{listing.description}}</p>
-      <a class="purchase" href="{{url_for('orders.purchase', id=listing.id)}}">
+      <a class="purchase" href="{{url_for('orders.cart', id=listing.id)}}">
       <button type="button" class="btn btn-success btn-lg btn-block">Purchase</button>
       </a>
     </div>
